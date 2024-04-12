@@ -6,6 +6,7 @@ import Register from './Auth/Register';
 import Dashboard from './pages/Dashboard';
 import { useAuth } from './contexts/AuthContext'
 import { Navigate } from 'react-router-dom';
+
 const App = () => {
   const { isAuthenticated } = useAuth();
   return(

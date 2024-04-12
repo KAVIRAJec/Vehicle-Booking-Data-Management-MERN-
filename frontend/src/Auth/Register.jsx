@@ -2,6 +2,8 @@ import React from 'react'
 import { Card,Flex,Typography,Form,Input,Button,Alert,Spin } from 'antd'
 import { Link } from 'react-router-dom';
 import useSignup from '../hooks/useSignup';
+import { GoogleLogin } from '@react-oauth/google'
+import { jwtDecode } from "jwt-decode";
 
 const Register = () => {
   const { loading, error, registerUser } = useSignup();
@@ -92,6 +94,22 @@ const Register = () => {
                 >
                   {loading ? <Spin /> : 'Create Account'}
                 </Button>
+              </Form.Item>
+              <Form.Item>
+              <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+              <GoogleLogin size="large" className="btn"
+                onSuccess={credentialResponse => {
+                  const credentialResponseDecoded = jwtDecode(
+                    credentialResponse.credential
+                  )
+                console.log(credentialResponseDecoded);
+                handleRegister({ email: credentialResponseDecoded.email, name: credentialResponseDecoded.name, password: "default",passwordConfirm: "default" });
+              }}
+                onError={() => {
+                console.log('Login Failed');
+              }}
+              />
+              </div>
               </Form.Item>
               <Form.Item>
               <Link to="/login">

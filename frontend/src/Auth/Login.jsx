@@ -2,6 +2,8 @@ import React from 'react'
 import { Card,Flex,Typography,Form,Input,Button,Alert,Spin } from 'antd'
 import { Link } from 'react-router-dom';
 import useLogin from '../hooks/useLogin';
+import { GoogleLogin } from '@react-oauth/google'
+import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
   const { error,loading, loginUser } = useLogin();
@@ -67,6 +69,22 @@ const Login = () => {
                 >
                   {loading ? <Spin /> : 'Sign in'}
                 </Button>
+              </Form.Item>
+              <Form.Item>
+              <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+              <GoogleLogin size="large" className="btn"
+                onSuccess={credentialResponse => {
+                  const credentialResponseDecoded = jwtDecode(
+                    credentialResponse.credential
+                  )
+                console.log(credentialResponseDecoded);
+                handleLogin({email: credentialResponseDecoded.email, password: "default"});
+              }}
+                onError={() => {
+                console.log('Login Failed');
+              }}
+              />
+              </div>
               </Form.Item>
               <Form.Item>
               <Link to="/">
