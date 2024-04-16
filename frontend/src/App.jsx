@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import './App.css'
+import './index.css'
 import Login from './Auth/Login';
 import Register from './Auth/Register';
 import Dashboard from './pages/Dashboard';
@@ -14,9 +14,7 @@ const App = () => {
     <Routes>
       <Route 
         path="/" 
-        element={
-        !isAuthenticated ? <Register /> : <Navigate to="/dashboard" />
-        }
+        element={!isAuthenticated ? <Register /> : <Navigate to="/dashboard" />}
       />
       <Route 
         path="/login"

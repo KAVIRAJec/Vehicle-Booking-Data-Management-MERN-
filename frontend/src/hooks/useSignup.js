@@ -1,15 +1,15 @@
 import { useState } from "react";
-import { message } from "antd";
 import { useAuth } from "../contexts/AuthContext.jsx"; 
 
 const useSignup = () => {
   const { login } = useAuth();
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const registerUser = async (values) => {
-    if(values.password !== values.passwordConfirm) {
-      return setError("Passwords do not match");
+    if(values.password !== values.confirmpassword) {
+      return setErrorMessage("Passwords do not match");
     }
 
     try {
@@ -25,21 +25,21 @@ const useSignup = () => {
 
       const data = await res.json();
       if(res.status === 201) {
-        message.success(data.message);
+        setErrorMessage(data.message);
         login(data.token,data.user);
       } else if (res.status === 400) {
-        setError(data.message);
+        setErrorMessage(data.message);
       }else {
-        message.error('Registration failed');
+        setErrorMessage(data.message);
       }
     } catch (error) {
-      message.error(error);
+      setErrorMessage(error);
      }finally {
       setLoading(false);
      }
   };
   
-  return {loading, error, registerUser };
+  return {loading, error, registerUser, errorMessage };
 }
 
 export default useSignup

@@ -1,7 +1,14 @@
-import React from 'react'
-import { useAuth } from '../contexts/AuthContext.jsx';
-import { Avatar, Button, Card, Flex, Typography } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
+import React from "react";
+import { useAuth } from "../contexts/AuthContext.jsx";
+import { User } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 const Dashboard = () => {
   const { userData, logout } = useAuth();
@@ -10,23 +17,21 @@ const Dashboard = () => {
     await logout();
   };
   return (
-    <Card className='profile-card'>
-      <Flex vertical gap="small" align='center'>
-      <Avatar size={150} icon={<UserOutlined />} className='avatar'/>
-      <Typography.Title 
-        level={2}
-        strong
-        className='username'>
-        {userData.name}
-        </Typography.Title>
-        <Typography.Text type="secondary" strong>
+    <Card className="w-[350px]">
+      <CardHeader>
+        <CardTitle>
+          <User size={150} className="avatar" />
+          {userData.name}
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <CardDescription>
+          Welcome {userData.role === "admin" ? "Admin" : "User"}
           Email: {userData.email}
-        </Typography.Text>
-        <Typography.Text type='secondary'>
           Role: {userData.role}
-        </Typography.Text>
-        <Button size='large' type='primary' className='profile-btn' onClick={handleLogout}>Logout</Button>
-      </Flex>
+        </CardDescription>
+      </CardContent>
+      <Button onClick={handleLogout}>Logout</Button>
     </Card>
   );
 };
