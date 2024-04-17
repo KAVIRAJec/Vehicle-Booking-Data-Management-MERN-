@@ -12,12 +12,12 @@ app.use(express.json());
 
 // 2)Routes
 app.use('/api/auth',authRouter);
+
 // 3)Mongo DB Connection
 const databaseUrl = process.env.DATABASE_URL;
 mongoose.connect(databaseUrl)
 .then(()=> console.log("Connected to the database"))
 .catch((error) => console.error("Failed to connect to MongoDB:", error));
-
 
 // 4)Global Error Handler
 app.use((err, req, res, next) => {
@@ -29,6 +29,7 @@ app.use((err, req, res, next) => {
         message: err.message,
     });
 });
+
 // 5)Server
 const port = 3005;
 app.listen(port,()=>{

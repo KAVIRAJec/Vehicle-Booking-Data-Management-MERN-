@@ -31,6 +31,7 @@ exports.signup = async (req,res,next) => {
                 name: newUser.name,
                 email: newUser.email,
                 role: newUser.role,
+                
             },
         });
     } catch (error) {
@@ -63,7 +64,47 @@ exports.login = async (req,res,next) => {
             message: 'Logged in successfully',
             user:{
                 _id: user._id,
+                id: user.id,
                 name: user.name,
+                contact: user.contact,
+                email: user.email,
+                role: user.role,
+
+            }
+        });
+    }catch (error){
+        next(error);
+    }
+};
+
+// EDIT USER
+exports.edit = async (req,res,next) => {
+    try{
+        const { name, id, contact, email } = req.body;
+
+        const user = await User.findOne({ email });
+
+        if(!user) return next(new createError('User not found',404));
+
+        const EditedUser = await User.findOneAndUpdate(
+            { email: email },
+            { name: name, id: id, contact: contact },
+            { upsert: true, new: true, runValidators: true },
+        );
+    
+        const token = jwt.sign({ _id: EditedUser._id }, 'secretkey123', {
+            expiresIn: '10m',
+        });
+    
+        res.status(200).json({
+            status: 'success',
+            token,
+            message: 'Data Edited successfully',
+            user:{
+                _id: user._id,
+                id: user.id,
+                name: user.name,
+                contact: user.contact,
                 email: user.email,
                 role: user.role,
             }
