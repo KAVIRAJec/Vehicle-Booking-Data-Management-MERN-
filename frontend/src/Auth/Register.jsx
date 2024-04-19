@@ -69,6 +69,7 @@ const Register = () => {
   };
 
   const { loading, error, registerUser, errorMessage } = useSignup();
+  
   const handleRegister = async (values) => {
     registerUser(values);
   };

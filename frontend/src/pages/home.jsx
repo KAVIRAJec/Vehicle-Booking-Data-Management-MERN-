@@ -1,6 +1,6 @@
-import React, { Profiler, useState } from "react";
+import React, { Profiler, useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext.jsx";
-import { Bell, BellDot, BusFront, CircleCheckBig, CircleUserRound, Cog, History, LayoutDashboard, LogOut, Menu, User } from "lucide-react";
+import { Bell, BellDot, BusFront, CircleCheckBig, CircleUserRound, Cog, History, LayoutDashboard, LogOut, Menu, User, UserPlus, UserRoundCog } from "lucide-react";
 import { Label } from "@/components/ui/label.jsx";
 import {
     DropdownMenu,
@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/tooltip"
 import {
     Dialog,
+    DialogClose,
     DialogContent,
     DialogDescription,
     DialogFooter,
@@ -35,7 +36,8 @@ import {
     SheetHeader,
     SheetTitle,
     SheetTrigger,
-  } from "@/components/ui/sheet"  
+} from "@/components/ui/sheet"
+import { Toaster, toast } from "sonner"
 import { MdManageAccounts, MdOutlineCancel } from "react-icons/md";
 import Dashboard from "./Dashboard.jsx";
 import Bookvehicle from "./bookvehicle";
@@ -46,8 +48,65 @@ import Approvedrequest from "./approvedrequest.jsx";
 import Rejectedrequest from "./rejectedrequest.jsx";
 import { Input } from "@/components/ui/input.jsx";
 import { Button } from "@/components/ui/button.jsx";
+import useEdit from "@/hooks/useEdit.js";
+import { ClassicSpinner } from "react-spinners-kit";
+
+const initialValues = { name: "", id: "", contact: "", email: "" };
 
 const Home = () => {
+    const [formValues, setFormValues] = useState(initialValues);
+    const [formErrors, setFormErrors] = useState({});
+    const [isSubmit, setIsSubmit] = useState(false);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormValues({ ...formValues, [name]: value });
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setFormValues({
+            ...formValues,
+            email: userData.email,
+        });
+        const errors = validate(formValues);
+        setFormErrors(errors);
+        setIsSubmit(true);
+    }
+
+    useEffect(() => {
+        console.log(formErrors);
+        if (Object.keys(formErrors).length === 0 && isSubmit) {
+            handleEdit(formValues);
+        }
+    }, [formErrors]);
+
+    const validate = (values) => {
+        const errors = {};
+        if (!values.name) {
+            errors.name = "Name is required";
+        }
+        if (!values.id) {
+            errors.id = "College ID is required";
+        }
+        if (!values.contact) {
+            errors.contact = "Contact Number is required";
+        }
+        return errors;
+    };
+
+    const { loading, error, errorMessage, editUser } = useEdit();
+
+    const handleEdit = async (values) => {
+        editUser(values);
+        if(errorMessage && errorMessage.includes("Data Edited successfully")){
+            toast.success(errorMessage);
+        }else {
+            toast.error(errorMessage);
+        }
+    };
+
+
     const { userData, logout } = useAuth();
     const [view, setView] = useState('dashboard');
     const [notification, setNotification] = useState(false);
@@ -55,7 +114,7 @@ const Home = () => {
     const handleLogout = async () => {
         await logout();
     };
-    
+
     const renderView = () => {
         switch (view) {
             case 'dashboard':
@@ -79,61 +138,62 @@ const Home = () => {
 
     return (
         <div className="flex flex-col">
-            <div className="flex flex-col absolute pl-3 mt-4 text-white font-bold text-2xl">
+            <div className="flex flex-col absolute pl-3 m-4 text-white font-bold font-sans italic hover:not-italic text-2xl">
                 Welcome to {userData.role} Page
             </div>
-            <div className="flex items-center justify-end text-white bg-slate-600 h-[70px] pr-3 border-b-2 shadow-xl">
+            <div className="flex items-center justify-end text-white bg-slate-900 h-[70px] pr-3 border-b-2 shadow-xl">
                 <TooltipProvider>
-                <Sheet>
-                    <Tooltip>
-                        <TooltipTrigger>
-                        <SheetTrigger>
-                            {notification ? <BellDot color="#de5f35" className="mr-5 mt-2 cursor-pointer" /> : <Bell className="mr-5 mt-2 cursor-pointer" />}
-                        </SheetTrigger>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                            notification
-                        </TooltipContent>
-                        <SheetContent>
-                            <SheetHeader>
-                                <SheetTitle className="text-base">Notification</SheetTitle>
-                                <SheetDescription>
-                                    Here's a Notification which you have got
-                                </SheetDescription>
-                            </SheetHeader>
-                            {notification ? 
-                            <div>{Notification}</div> :
-                            <div className="mt-8 mb-5 flex text-xl text-slate-700 items-center justify-center">
-                                No New Notifications
-                            </div>
-                            }
-                            
-                            <SheetFooter>
-                                <SheetClose>
-                                    <Button type='Close'>Close</Button>
-                                </SheetClose>
-                            </SheetFooter>
-                        </SheetContent>
-                    </Tooltip>
+                    <Sheet>
+                        <Tooltip>
+                            <TooltipTrigger>
+                                <SheetTrigger>
+                                    {notification ? <BellDot color="#de5f35" className="mr-5 mt-2 cursor-pointer animate-bounce" /> : <Bell className="mr-5 mt-2 cursor-pointer hover:h-7 w-7" />}
+                                </SheetTrigger>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                notification
+                            </TooltipContent>
+                            <SheetContent>
+                                <SheetHeader>
+                                    <SheetTitle className="text-base">Notification</SheetTitle>
+                                    <SheetDescription>
+                                        Here's a Notification which you have got
+                                    </SheetDescription>
+                                </SheetHeader>
+                                {notification ?
+                                    <div>{Notification}</div> :
+                                    <div className="mt-8 mb-5 flex text-xl text-slate-700 items-center justify-center">
+                                        No New Notifications
+                                    </div>
+                                }
+
+                                <SheetFooter>
+                                    <SheetClose>
+                                        <Button type='Close'>Close</Button>
+                                    </SheetClose>
+                                </SheetFooter>
+                            </SheetContent>
+                        </Tooltip>
                     </Sheet>
                 </TooltipProvider>
 
                 <DropdownMenu>
-                    <DropdownMenuTrigger className="flex items-center mr-2">
+                    <DropdownMenuTrigger className="flex items-center mr-2 hover:text-sky-200">
                         {userData.role === 'admin' ? <MdManageAccounts className="h-8 w-8 mx-0 cursor-pointer" /> : <CircleUserRound className="h-8 w-8 mx-0 cursor-pointer" />}
                         <span className="ml-1">{userData.name}</span>
                     </DropdownMenuTrigger>
-                        <DropdownMenuContent className='w-56'>
-                            <DropdownMenuLabel className="text-base">Profile</DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuGroup>
-                                <DropdownMenuItem>
-                                    <Dialog>
-                                        <DialogTrigger className="flex items-center" onClick={(e) => e.stopPropagation()}>
-                                            <User className="mr-2 h-4 w-4" />
-                                            <span>Edit Profile</span>
-                                        </DialogTrigger>
-                                        <DialogContent className="sm:max-w-[425px]" open="true">
+                    <DropdownMenuContent className='w-56'>
+                        <DropdownMenuLabel className="text-base">Profile</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuGroup>
+                            <DropdownMenuItem>
+                                <Dialog>
+                                    <DialogTrigger className="flex items-center" onClick={(e) => e.stopPropagation()}>
+                                        <UserPlus className="mr-2 h-4 w-4" />
+                                        <span>Edit Profile</span>
+                                    </DialogTrigger>
+                                    <DialogContent className="sm:max-w-[425px]" open>
+                                        <form onSubmit={handleSubmit}>
                                             <DialogHeader onClick={(e) => e.stopPropagation()}>
                                                 <DialogTitle>Edit profile</DialogTitle>
                                                 <DialogDescription>
@@ -142,41 +202,49 @@ const Home = () => {
                                             </DialogHeader>
                                             <div className="grid gap-4 py-4" onClick={(e) => e.stopPropagation()}>
                                                 <div className="grid grid-cols-4 items-center gap-4">
-                                                    <Label htmlFor="name" className="text-right">
+                                                    <Label className="text-right">
                                                         Name
                                                     </Label>
                                                     <Input
-                                                        id="name"
-                                                        defaultValue={userData.name}
+                                                        type="text"
+                                                        name="name"
                                                         className="col-span-3"
-                                                    />
+                                                        value={formValues.name}
+                                                        onChange={handleChange}
+                                                    />                                                    
                                                 </div>
+                                                <p className='text-end text-red-500 text-xs italic'>{formErrors.name}</p>
                                                 <div className="grid grid-cols-4 items-center gap-4">
-                                                    <Label htmlFor="id" className="text-right">
+                                                    <Label className="text-right">
                                                         College ID
                                                     </Label>
                                                     <Input
-                                                        id="id"
-                                                        defaultValue={userData.id}
+                                                        name="id"
+                                                        type="text"
                                                         className="col-span-3"
+                                                        value={formValues.id}
+                                                        onChange={handleChange}
                                                     />
                                                 </div>
+                                                <p className='text-end text-red-500 text-xs italic'>{formErrors.id}</p>
                                                 <div className="grid grid-cols-4 items-center gap-4">
-                                                    <Label htmlFor="contact" className="text-right">
+                                                    <Label className="text-right">
                                                         Contact Number
                                                     </Label>
                                                     <Input
-                                                        id="contact"
-                                                        defaultValue={userData.contact}
+                                                        name="contact"
+                                                        type="Number"
                                                         className="col-span-3"
+                                                        value={formValues.contact}
+                                                        onChange={handleChange}
                                                     />
                                                 </div>
+                                                <p className='text-end text-red-500 text-xs italic'>{formErrors.contact}</p>
                                                 <div className="grid grid-cols-4 items-center gap-4">
-                                                    <Label htmlFor="email" className="text-right">
+                                                    <Label className="text-right">
                                                         Email ID
                                                     </Label>
                                                     <Input
-                                                        id="email"
                                                         disabled
                                                         defaultValue={userData.email}
                                                         className="col-span-3"
@@ -184,71 +252,128 @@ const Home = () => {
                                                 </div>
                                             </div>
                                             <DialogFooter>
-                                                <Button className='items-start' >Close</Button>
-                                                <Button type="submit">Save changes</Button>
+                                                <DialogClose>
+                                                <Button  variant="ghost" className='items-start' >Close</Button>
+                                                </DialogClose>                                                
+                                                <Button type="submit">                                                
+                                                {loading ? <ClassicSpinner /> : 'Save Changes'}</Button>
                                             </DialogFooter>
-                                        </DialogContent>
-                                    </Dialog>
-
-                                </DropdownMenuItem>
-                                <DropdownMenuItem onClick={handleLogout}>
-                                    <LogOut className="mr-2 h-4 w-4" />
-                                    <span>Logout</span>
-                                </DropdownMenuItem>
-                            </DropdownMenuGroup>
-                        </DropdownMenuContent>
+                                        </form>
+                                    </DialogContent>
+                                </Dialog>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                            <Dialog>
+                                    <DialogTrigger className="flex items-center" onClick={(e) => e.stopPropagation()}>
+                                    <UserRoundCog className="mr-2 h-4 w-4"/>
+                                    View Profile
+                                    </DialogTrigger>
+                                    <DialogContent className="sm:max-w-[425px]" open>
+                                    <DialogHeader onClick={(e) => e.stopPropagation()}>
+                                            <DialogTitle className='text-2xl'>Profile Details</DialogTitle>
+                                                <DialogDescription>
+                                                    Make sure to verify your profile details here. Go to edit profile to Change it
+                                                </DialogDescription>
+                                            </DialogHeader>
+                                            <div className="grid grid-cols-2 items-center gap-4">
+                                                <Label className="text-right text-xl" >
+                                                    Name: 
+                                                </Label>
+                                                <Label className='text-xl font-normal'>
+                                                {userData.name}
+                                                </Label>
+                                                <Label className="text-right text-xl">
+                                                    College ID: 
+                                                </Label>
+                                                <Label className='text-xl font-normal'>
+                                                {userData.id}
+                                                </Label>
+                                                <Label className="text-right text-xl">
+                                                    Email: 
+                                                </Label>
+                                                <Label className='text-xl font-normal'>
+                                                {userData.email}
+                                                </Label>
+                                                <Label className="text-right text-xl">
+                                                    Mobile: 
+                                                </Label>
+                                                <Label className='text-xl font-normal'>
+                                                {userData.contact}
+                                                </Label>
+                                                <Label className='text-right text-xl'>
+                                                    Role: 
+                                                </Label>
+                                                <Label className='text-xl font-normal'>
+                                                    {userData.role}
+                                                </Label>
+                                            </div>
+                                            <DialogFooter>
+                                                <DialogClose>
+                                                <Button className='items-start' >Close</Button>
+                                                </DialogClose>
+                                            </DialogFooter>
+                                    </DialogContent>
+                            
+                            </Dialog>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={handleLogout}>
+                                <LogOut className="mr-2 h-4 w-4" />
+                                <span>Logout</span>
+                            </DropdownMenuItem>
+                        </DropdownMenuGroup>
+                    </DropdownMenuContent>
                 </DropdownMenu>
             </div>
 
             <div className="flex">
                 <div className="flex-col p-4 bg-slate-200 h-screen max-w-[16rem]">
-
-                    <div className="flex py-3 border-b-2 border-slate-400 cursor-pointer" onClick={() => setView('dashboard')}>
-                        <LayoutDashboard className="h-8 w-8 text-slate-700" />
-                        <Label className="block pl-3 text-xl text-slate-700 cursor-pointer">Dashboard</Label>
+                <Toaster richColors position="top-center"/>
+                    <div className="flex py-3 border-b-2 border-slate-400 cursor-pointer hover:text-slate-50" onClick={() => setView('dashboard')}>
+                        <LayoutDashboard className="h-8 w-8 text-slate-900 hover:h-9 w-9" />
+                        <Label className="block pl-3 mt-0.5 text-xl text-slate-900 cursor-pointer hover:text-[21px] hover:text-slate-600">Dashboard</Label>
                     </div>
 
                     {userData.role === 'user' && (
                         <div className="flex my-3 cursor-pointer" onClick={() => setView('bookvehicle')}>
-                            <BusFront className="h-8 w-8 text-slate-700" />
-                            <Label className="block ml-3 text-xl text-slate-700 cursor-pointer">Book Vehicle</Label>
+                            <BusFront className="h-8 w-8 text-slate-900 hover:h-9 w-9" />
+                            <Label className="block ml-3 text-xl text-slate-900 cursor-pointer hover:text-[21px] hover:text-slate-600">Book Vehicle</Label>
                         </div>
                     )}
                     {userData.role === 'user' && (
                         <div className="flex my-3 cursor-pointer" onClick={() => setView('requesthistory')}>
-                            <History className="h-8 w-8 text-slate-700" />
-                            <Label className="block ml-3 text-xl text-slate-700 cursor-pointer">Request History</Label>
+                            <History className="h-8 w-8 text-slate-900 hover:h-9 w-9" />
+                            <Label className="block ml-3 text-xl text-slate-900 cursor-pointer hover:text-[21px] hover:text-slate-600">Request History</Label>
                         </div>
                     )}
 
                     {userData.role === 'admin' && (
                         <div className="flex my-3 cursor-pointer" onClick={() => setView('pendingrequest')}>
-                            <History className="h-8 w-8 text-slate-700" />
-                            <Label className="block ml-3 text-xl text-slate-700 cursor-pointer">Pending Request</Label>
+                            <History className="h-8 w-8 text-slate-900 hover:h-9 w-9" />
+                            <Label className="block ml-3 text-xl text-slate-900 cursor-pointer hover:text-[21px] hover:text-slate-600">Pending Request</Label>
                         </div>
                     )}
                     {userData.role === 'admin' && (
                         <div className="flex my-3 cursor-pointer" onClick={() => setView('approvedrequest')}>
-                            <CircleCheckBig className="h-7 w-8 text-slate-700" />
-                            <Label className="block ml-3 text-xl text-slate-700 cursor-pointer">Approved Request</Label>
+                            <CircleCheckBig className="h-7 w-8 text-slate-900 hover:h-9 w-9" />
+                            <Label className="block ml-3 text-xl text-slate-900 cursor-pointer hover:text-[20px] hover:text-slate-600">Approved Request</Label>
                         </div>
                     )}
                     {userData.role === 'admin' && (
                         <div className="flex my-3 cursor-pointer" onClick={() => setView('rejectedrequest')}>
-                            <MdOutlineCancel className="h-8 w-8 text-slate-700" />
-                            <Label className="block ml-3 text-xl text-slate-700 cursor-pointer">Rejected Request</Label>
+                            <MdOutlineCancel className="h-8 w-8 text-slate-900 hover:h-9 w-9" />
+                            <Label className="block ml-3 text-xl text-slate-900 cursor-pointer hover:text-[21px] hover:text-slate-600">Rejected Request</Label>
                         </div>
                     )}
                     {userData.role === 'admin' && (
                         <div className="flex my-3 cursor-pointer" onClick={() => setView('vehiclemaster')}>
-                            <Cog className="h-8 w-8 text-slate-700" />
-                            <Label className="block ml-3 text-xl text-slate-700 cursor-pointer">Vehicle Master</Label>
+                            <Cog className="h-8 w-8 text-slate-900 hover:h-9 w-9" />
+                            <Label className="block ml-3 text-xl text-slate-900 cursor-pointer hover:text-[21px] hover:text-slate-600">Vehicle Master</Label>
                         </div>
                     )}
                     <div className="flex my-3">
                         <button className="block flex" onClick={handleLogout}>
-                            <LogOut className="h-8 w-8 text-slate-700 cursor-pointer" />
-                            <Label className="block ml-3 text-xl text-slate-700 cursor-pointer">Log Out</Label>
+                            <LogOut className="h-8 w-8 text-slate-900 cursor-pointer hover:h-9 w-9" />
+                            <Label className="block ml-3 text-xl text-slate-900 cursor-pointer hover:text-[21px] hover:text-slate-600">Log Out</Label>
                         </button>
                     </div>
                 </div>
