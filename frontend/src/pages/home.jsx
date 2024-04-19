@@ -99,9 +99,9 @@ const Home = () => {
 
     const handleEdit = async (values) => {
         editUser(values);
-        if(errorMessage && errorMessage.includes("Data Edited successfully")){
+        if (errorMessage && errorMessage.includes("Data Edited successfully")) {
             toast.success(errorMessage);
-        }else {
+        } else {
             toast.error(errorMessage);
         }
     };
@@ -182,11 +182,11 @@ const Home = () => {
                         {userData.role === 'admin' ? <MdManageAccounts className="h-8 w-8 mx-0 cursor-pointer" /> : <CircleUserRound className="h-8 w-8 mx-0 cursor-pointer" />}
                         <span className="ml-1">{userData.name}</span>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent className='w-56'>
-                        <DropdownMenuLabel className="text-base">Profile</DropdownMenuLabel>
+                    <DropdownMenuContent className='w-64'>
+                        <DropdownMenuLabel className="text-base bg-zinc-200 rounded-lg p-3">Profile</DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuGroup>
-                            <DropdownMenuItem>
+                            <DropdownMenuItem className="p-3">
                                 <Dialog>
                                     <DialogTrigger className="flex items-center" onClick={(e) => e.stopPropagation()}>
                                         <UserPlus className="mr-2 h-4 w-4" />
@@ -211,7 +211,7 @@ const Home = () => {
                                                         className="col-span-3"
                                                         value={formValues.name}
                                                         onChange={handleChange}
-                                                    />                                                    
+                                                    />
                                                 </div>
                                                 <p className='text-end text-red-500 text-xs italic'>{formErrors.name}</p>
                                                 <div className="grid grid-cols-4 items-center gap-4">
@@ -253,70 +253,71 @@ const Home = () => {
                                             </div>
                                             <DialogFooter>
                                                 <DialogClose>
-                                                <Button  variant="ghost" className='items-start' >Close</Button>
-                                                </DialogClose>                                                
-                                                <Button type="submit">                                                
-                                                {loading ? <ClassicSpinner /> : 'Save Changes'}</Button>
+                                                    <Button variant="ghost" className="items-start">Close</Button>
+                                                </DialogClose>
+                                                <Button type="submit">
+                                                    {loading ? <ClassicSpinner /> : 'Save Changes'}
+                                                </Button>
                                             </DialogFooter>
                                         </form>
                                     </DialogContent>
                                 </Dialog>
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
-                            <Dialog>
+                            <DropdownMenuItem className="p-3">
+                                <Dialog>
                                     <DialogTrigger className="flex items-center" onClick={(e) => e.stopPropagation()}>
-                                    <UserRoundCog className="mr-2 h-4 w-4"/>
-                                    View Profile
+                                        <UserRoundCog className="mr-2 h-4 w-4" />
+                                        View Profile
                                     </DialogTrigger>
                                     <DialogContent className="sm:max-w-[425px]" open>
-                                    <DialogHeader onClick={(e) => e.stopPropagation()}>
+                                        <DialogHeader onClick={(e) => e.stopPropagation()}>
                                             <DialogTitle className='text-2xl'>Profile Details</DialogTitle>
-                                                <DialogDescription>
-                                                    Make sure to verify your profile details here. Go to edit profile to Change it
-                                                </DialogDescription>
-                                            </DialogHeader>
-                                            <div className="grid grid-cols-2 items-center gap-4">
-                                                <Label className="text-right text-xl" >
-                                                    Name: 
-                                                </Label>
-                                                <Label className='text-xl font-normal'>
+                                            <DialogDescription>
+                                                Make sure to verify your profile details here. Go to edit profile to Change it
+                                            </DialogDescription>
+                                        </DialogHeader>
+                                        <div className="grid grid-cols-2 items-center gap-4">
+                                            <Label className="text-right text-xl" >
+                                                Name:
+                                            </Label>
+                                            <Label className='text-xl font-normal'>
                                                 {userData.name}
-                                                </Label>
-                                                <Label className="text-right text-xl">
-                                                    College ID: 
-                                                </Label>
-                                                <Label className='text-xl font-normal'>
+                                            </Label>
+                                            <Label className="text-right text-xl">
+                                                College ID:
+                                            </Label>
+                                            <Label className='text-xl font-normal'>
                                                 {userData.id}
-                                                </Label>
-                                                <Label className="text-right text-xl">
-                                                    Email: 
-                                                </Label>
-                                                <Label className='text-xl font-normal'>
+                                            </Label>
+                                            <Label className="text-right text-xl">
+                                                Email:
+                                            </Label>
+                                            <Label className='text-xl font-normal'>
                                                 {userData.email}
-                                                </Label>
-                                                <Label className="text-right text-xl">
-                                                    Mobile: 
-                                                </Label>
-                                                <Label className='text-xl font-normal'>
+                                            </Label>
+                                            <Label className="text-right text-xl">
+                                                Mobile:
+                                            </Label>
+                                            <Label className='text-xl font-normal'>
                                                 {userData.contact}
-                                                </Label>
-                                                <Label className='text-right text-xl'>
-                                                    Role: 
-                                                </Label>
-                                                <Label className='text-xl font-normal'>
-                                                    {userData.role}
-                                                </Label>
-                                            </div>
-                                            <DialogFooter>
-                                                <DialogClose>
+                                            </Label>
+                                            <Label className='text-right text-xl'>
+                                                Role:
+                                            </Label>
+                                            <Label className='text-xl font-normal'>
+                                                {userData.role}
+                                            </Label>
+                                        </div>
+                                        <DialogFooter>
+                                            <DialogClose>
                                                 <Button className='items-start' >Close</Button>
-                                                </DialogClose>
-                                            </DialogFooter>
+                                            </DialogClose>
+                                        </DialogFooter>
                                     </DialogContent>
-                            
-                            </Dialog>
+
+                                </Dialog>
                             </DropdownMenuItem>
-                            <DropdownMenuItem onClick={handleLogout}>
+                            <DropdownMenuItem className='p-3' onClick={handleLogout}>
                                 <LogOut className="mr-2 h-4 w-4" />
                                 <span>Logout</span>
                             </DropdownMenuItem>
@@ -326,8 +327,8 @@ const Home = () => {
             </div>
 
             <div className="flex">
-                <div className="flex-col p-4 bg-slate-200 h-screen max-w-[16rem]">
-                <Toaster richColors position="top-center"/>
+                <div className="flex-col p-4 bg-zinc-200 h-screen max-w-[16rem]">
+                    <Toaster richColors position="top-center" />
                     <div className="flex py-3 border-b-2 border-slate-400 cursor-pointer hover:text-slate-50" onClick={() => setView('dashboard')}>
                         <LayoutDashboard className="h-8 w-8 text-slate-900 hover:h-9 w-9" />
                         <Label className="block pl-3 mt-0.5 text-xl text-slate-900 cursor-pointer hover:text-[21px] hover:text-slate-600">Dashboard</Label>
