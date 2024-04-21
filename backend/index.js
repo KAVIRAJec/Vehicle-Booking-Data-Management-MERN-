@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const authRouter = require('./routes/authRoute');
 const vehicleRouter = require('./routes/vehicleRoute');
+const driverRouter = require('./routes/driverRoute');
 const app = express();
 const env = require('dotenv');
 env.config();
@@ -14,7 +15,7 @@ app.use(express.json());
 // 2)Routes
 app.use('/api/auth',authRouter);
 app.use('/vehicle',vehicleRouter);
-//app.use('/driver',);
+app.use('/driver',driverRouter);
 //app.use('/vehicle_driver',);
 //app.use('/booking');
 

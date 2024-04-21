@@ -27,23 +27,6 @@ exports.createVehicle = async (req,res,next) => {
     }
 };
 
-//Read all vehicle
-exports.readAllVehicle = async (req,res,next) => {
-    try{
-        const vehicles = await Vehicle.find();
-
-        res.status(200).json({
-            status: "success",
-            message: 'Vehicle fetch Successfully',
-            data: {
-                vehicles,
-            }
-        })
-    } catch (error) {
-        next(error);
-    }
-};
-
 //read individual vehicle
 exports.readVehicle = async (req,res,next) => {
     try{
@@ -64,6 +47,23 @@ exports.readVehicle = async (req,res,next) => {
         next(error);
     }
 }
+
+//Read all vehicle
+exports.readAllVehicle = async (req,res,next) => {
+    try{
+        const vehicles = await Vehicle.find();
+
+        res.status(200).json({
+            status: "success",
+            message: 'Vehicle fetch Successfully',
+            data: {
+                vehicles,
+            }
+        })
+    } catch (error) {
+        next(error);
+    }
+};
 
 //edit vehicle
 exports.editVehicle = async (req,res,next) => {

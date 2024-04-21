@@ -36,12 +36,5 @@ const driverSchema = new mongoose.Schema({
     },
 });
 
-driverSchema.post('findOneAndDelete', async function (doc) {
-    if (doc) {
-        // Delete corresponding vehicle_driver entries
-        await VehicleDriver.deleteMany({ driver_name: doc.name });
-    }
-});
-
 const Driver = mongoose.model('Driver',driverSchema);
 module.exports = Driver;
