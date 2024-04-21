@@ -1,9 +1,13 @@
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
 import React from "react";
 
 const Dashboard = () => {
   
   return (
-    <div>Hello Dashboard</div>
+    <div>
+      Here is a Dashboard
+    </div>
 
   );
 };
