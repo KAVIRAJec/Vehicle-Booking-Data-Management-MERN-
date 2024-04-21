@@ -91,7 +91,7 @@ exports.editVehicle = async (req,res,next) => {
     } catch (error) {
         next(error);
     }
-}
+};
 
 //delete Vehicle
 exports.deleteVehicle = async (req,res,next) => {
