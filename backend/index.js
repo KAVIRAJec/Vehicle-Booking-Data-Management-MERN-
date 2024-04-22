@@ -5,6 +5,7 @@ const authRouter = require('./routes/authRoute');
 const vehicleRouter = require('./routes/vehicleRoute');
 const driverRouter = require('./routes/driverRoute');
 const vehicle_driverRouter = require('./routes/vehicle_driverRoute');
+const bookingRouter = require('./routes/bookingRoute');
 const app = express();
 const env = require('dotenv');
 env.config();
@@ -18,7 +19,7 @@ app.use('/api/auth',authRouter);
 app.use('/vehicle',vehicleRouter);
 app.use('/driver',driverRouter);
 app.use('/vehicle_driver',vehicle_driverRouter);
-//app.use('/booking');
+app.use('/booking',bookingRouter);
 
 // 3)Mongo DB Connection
 const databaseUrl = process.env.DATABASE_URL;

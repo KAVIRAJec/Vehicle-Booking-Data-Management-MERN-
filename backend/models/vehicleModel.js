@@ -10,7 +10,7 @@ const vehicleSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
-    brand_name: {
+    vehicle_type: {
         type: String,
         required: true,
     },
