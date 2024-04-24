@@ -6,9 +6,6 @@ import Register from './Auth/Register';
 import Dashboard from './pages/Dashboard';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from './contexts/AuthContext'
-//import Navbar from './Navigation/Navbar';
-import Bookvehicle from './pages/bookvehicle';
-import Requesthistory from './pages/requesthistory';
 import Home from './pages/home';
 
 const App = () => {
@@ -30,18 +27,6 @@ const App = () => {
         path="/home"
         element={isAuthenticated ? <Home /> : <Login />}
       />
-      <Route 
-        path='/dashboard' 
-        element={<Dashboard />} 
-      />
-      <Route 
-        path='/bookvehicle' 
-        element={<Bookvehicle />}
-        />
-      <Route 
-        path='/requesthistory' 
-        element={<Requesthistory />}
-        />
     </Routes>
   </Router>
   );

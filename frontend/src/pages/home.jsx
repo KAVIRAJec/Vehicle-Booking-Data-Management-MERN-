@@ -53,7 +53,7 @@ import { ClassicSpinner } from "react-spinners-kit";
 
 const initialValues = { name: "", id: "", contact: "", email: "" };
 
-const Home = () => {
+const Home = ({ initialView }) => {
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
     const [isSubmit, setIsSubmit] = useState(false);
@@ -106,10 +106,13 @@ const Home = () => {
         }
     };
 
-
     const { userData, logout } = useAuth();
-    const [view, setView] = useState('dashboard');
+    const [view, setView] = useState(initialView);
     const [notification, setNotification] = useState(false);
+
+    const handleViewChange = (newView) => {
+        setView(newView);
+    }
 
     const handleLogout = async () => {
         await logout();
@@ -118,7 +121,7 @@ const Home = () => {
     const renderView = () => {
         switch (view) {
             case 'dashboard':
-                return <Dashboard />;
+                return <Dashboard onViewChange={handleViewChange} />;
             case 'bookvehicle':
                 return <Bookvehicle />;//user
             case 'requesthistory':
@@ -132,14 +135,15 @@ const Home = () => {
             case 'rejectedrequest':
                 return <Rejectedrequest />//admin
             default:
-                return <Dashboard />;
+                return <Dashboard onViewChange={handleViewChange} />;
         }
     };
 
     return (
         <div className="flex flex-col">
             <div className="flex flex-col absolute pl-3 m-4 text-white font-bold font-sans italic hover:not-italic text-2xl">
-                Welcome to {userData.role} Page
+                <img src="/vite.png" alt="Vite" className="absolute h-10 w-10 rounded-xl hover:opacity-95" />
+                <span className="ml-10 pl-3 text-white font-bold font-sans italic hover:not-italic text-2xl">Welcome to {userData.role} Page</span>
             </div>
             <div className="flex items-center justify-end text-white bg-slate-900 h-[70px] pr-3 border-b-2 shadow-xl">
                 <TooltipProvider>
@@ -280,31 +284,31 @@ const Home = () => {
                                             <Label className="text-right text-xl" >
                                                 Name:
                                             </Label>
-                                            <Label className='text-xl font-normal'>
+                                            <Label className='text-base font-normal'>
                                                 {userData.name}
                                             </Label>
                                             <Label className="text-right text-xl">
                                                 College ID:
                                             </Label>
-                                            <Label className='text-xl font-normal'>
+                                            <Label className='text-base font-normal'>
                                                 {userData.id}
                                             </Label>
                                             <Label className="text-right text-xl">
                                                 Email:
                                             </Label>
-                                            <Label className='text-xl font-normal'>
+                                            <Label className='text-base font-normal'>
                                                 {userData.email}
                                             </Label>
                                             <Label className="text-right text-xl">
                                                 Mobile:
                                             </Label>
-                                            <Label className='text-xl font-normal'>
+                                            <Label className='text-base font-normal'>
                                                 {userData.contact}
                                             </Label>
                                             <Label className='text-right text-xl'>
                                                 Role:
                                             </Label>
-                                            <Label className='text-xl font-normal'>
+                                            <Label className='text-base font-normal'>
                                                 {userData.role}
                                             </Label>
                                         </div>
@@ -327,7 +331,7 @@ const Home = () => {
             </div>
 
             <div className="flex">
-                <div className="flex-col p-4 bg-zinc-200 h-screen max-w-[16rem]">
+                <div className="flex-shrink-0 flex-col p-4 bg-zinc-200 max-h-full min-h-screen max-w-[20rem]">
                     <Toaster richColors position="top-center" />
                     <div className="flex py-3 border-b-2 border-slate-400 cursor-pointer hover:text-slate-50" onClick={() => setView('dashboard')}>
                         <LayoutDashboard className="h-8 w-8 text-slate-900 hover:h-9 w-9" />
