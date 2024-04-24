@@ -7,12 +7,12 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
 const Dashboard = ({ onViewChange }) => {
-  const [view, setView] =useState('dashboard');
+  const [view, setView] = useState('dashboard');
   const { userData, logout } = useAuth();
-  
+
   const handlePage = () => {
-    userData.role==='admin'? onViewChange('pendingrequest') : onViewChange('bookvehicle') ;
-    
+    userData.role === 'admin' ? onViewChange('pendingrequest') : onViewChange('bookvehicle');
+
   }
 
   return (
@@ -20,100 +20,100 @@ const Dashboard = ({ onViewChange }) => {
       <div className="mt-6 flex justify-center items-center mb-10">
         <Input type="text" className="px-3 py-2 w-96" placeholder="Search..." />
         <Button className="px-3 py-2 ml-2">
-          <Search 
+          <Search
             width={20}
             height={20}
             strokeWidth={2}
             stroke="currentColor"
             className="w-6 h-6"
-            />
+          />
         </Button>
       </div>
 
       <Carousel gap={16} col={1} loop={true} showDots={true} autoplay={2000} dotColorActive="#000">
         <Carousel.Item className="flex justify-center items-center">
-        <img src="/battery.png" alt="Battery" width="100%" style={{ height: "550px", opacity: 1 }} />        
+          <img src="/battery.png" alt="Battery" width="100%" style={{ height: "550px", opacity: 1 }} />
         </Carousel.Item>
         <Carousel.Item className="flex justify-center items-center">
-        <img src="/bus.png" alt="Bus" width="100%" style={{ height: "550px", opacity: 1 }} />
+          <img src="/bus.png" alt="Bus" width="100%" style={{ height: "550px", opacity: 1 }} />
         </Carousel.Item>
         <Carousel.Item className="flex justify-center items-center">
-        <img src="/car.png" alt="Car" width="100%" style={{ height: "550px", opacity: 1 }} />
+          <img src="/car.png" alt="Car" width="100%" style={{ height: "550px", opacity: 1 }} />
         </Carousel.Item>
         <Carousel.Item className="flex justify-center items-center">
-        <img src="/truck.png" alt="Truck" width="100%" style={{ height: "550px", opacity: 1 }} />
+          <img src="/truck.png" alt="Truck" width="100%" style={{ height: "550px", opacity: 1 }} />
         </Carousel.Item>
         <Carousel.Item className="flex justify-center items-center">
-        <img src="/truck1.png" alt="Bus" width="100%" style={{ height: "550px", opacity: 1 }} />
+          <img src="/truck1.png" alt="Bus" width="100%" style={{ height: "550px", opacity: 1 }} />
         </Carousel.Item>
         <Carousel.Item className="flex justify-center items-center">
-        <img src="/truck2.png" alt="Bus" width="100%" style={{ height: "550px", opacity: 1 }} />
+          <img src="/truck2.png" alt="Bus" width="100%" style={{ height: "550px", opacity: 1 }} />
         </Carousel.Item>
-        </Carousel>
+      </Carousel>
 
-        <div className="grid grid-cols-2 gap-3 px-10 my-20">
+      <div className="grid grid-cols-2 gap-3 px-10 my-20">
         <div>
           <h1 className="text-slate-900 font-mono text-4xl font-extrabold py-14">
             Your Journey Start Here...
           </h1>
           <p className="text-slate-700 text-lg pt-4">
-          Committed to your comfort, dedicated to your satisfaction. Creating excellence in every drive. Driving professionalism into every journey. Trust the experts. 
+            Committed to your comfort, dedicated to your satisfaction. Creating excellence in every drive. Driving professionalism into every journey. Trust the experts.
           </p>
           <div className="text-right mr-12">
-              <Button className="mt-8 p-6 text-base" onClick={handlePage}>Get Started</Button>
+            <Button className="mt-8 p-6 text-base" onClick={handlePage}>Get Started</Button>
           </div>
         </div>
         <div>
           <img src="/truck.jpeg" alt="Truck" width="100%" className='rounded-xl h-[400px]' />
         </div>
+      </div>
+
+      <div className="grid grid-cols-3 mb-10">
+        <div className="p-3 pl-6">
+          <Card className="h-80 w-full bg-slate-200 hover:shadow-2xl transition-colors duration-100">
+            <CardHeader className='flex flex-row justify-between'>
+              <CardTitle className='flex'>Car</CardTitle>
+              <Button variant='outline' className="flex bg-teal-700 text-white p-2 px-4 mb-2 rounded-xl transform -translate-y-3">Capacity: 6</Button>
+            </CardHeader>
+            <CardContent>
+              <img src='/bolero.png' alt="Car" width='100%' className="rounded-xl h-full" />
+            </CardContent>
+            <CardFooter className='flex justify-center'>
+              <Button className='bg-gray-800 px-5' onClick={handlePage}>Book Now</Button>
+            </CardFooter>
+          </Card>
+        </div>
+        <div className="p-3">
+          <Card className="h-80 w-full bg-slate-200 hover:shadow-2xl transition-colors duration-100">
+            <CardHeader className='flex flex-row justify-between'>
+              <CardTitle className='flex'>Bus</CardTitle>
+              <Button variant='outline' className="flex bg-teal-700 text-white p-2 px-4 mb-2 rounded-xl transform -translate-y-3">Capacity: 40</Button>
+            </CardHeader>
+            <CardContent className='flex justify-center'>
+              <img src='/Bus2.png' alt="Bus" width='78%' className="rounded-xl h-full" />
+            </CardContent>
+            <CardFooter className='flex justify-center'>
+              <Button className='bg-gray-800 px-5' onClick={handlePage}>Book Now</Button>
+            </CardFooter>
+          </Card>
+        </div>
+        <div className="p-3 pr-6">
+          <Card className="h-80 w-full bg-slate-200 hover:shadow-2xl transition-colors duration-100">
+            <CardHeader className='flex flex-row justify-between'>
+              <CardTitle className='flex'>Goods Carriers</CardTitle>
+              <Button variant='outline' className="flex bg-teal-700 text-white p-2 px-4 mb-2 rounded-xl transform -translate-y-3">Capacity: 1 ton</Button>
+            </CardHeader>
+            <CardContent className='flex justify-center'>
+              <img src='/Truck.png' alt="Car" width='64%' className="rounded-xl h-full" />
+            </CardContent>
+            <CardFooter className='flex justify-center'>
+              <Button className='bg-gray-800 px-5' onClick={handlePage}>Book Now</Button>
+            </CardFooter>
+          </Card>
         </div>
 
-        <div className="grid grid-cols-3 mb-10">
-          <div className="p-3 pl-6"> 
-            <Card className="h-80 w-full bg-slate-200 hover:shadow-2xl transition-colors duration-100">
-                <CardHeader className='flex flex-row justify-between'>                  
-                  <CardTitle className='flex'>Car</CardTitle>
-                  <Button variant='outline' className="flex bg-teal-700 text-white p-2 px-4 mb-2 rounded-xl transform -translate-y-3">Capacity: 6</Button>
-                </CardHeader>
-                <CardContent>
-                  <img src='/bolero.png' alt="Car" width='100%' className="rounded-xl h-full" />
-                </CardContent>
-                <CardFooter className='flex justify-center'>
-                <Button className='bg-gray-800 px-5' onClick={handlePage}>Book Now</Button>                  
-                </CardFooter>
-            </Card>
-          </div>
-          <div className="p-3"> 
-            <Card className="h-80 w-full bg-slate-200 hover:shadow-2xl transition-colors duration-100">
-                <CardHeader className='flex flex-row justify-between'>                  
-                  <CardTitle className='flex'>Bus</CardTitle>
-                  <Button variant='outline' className="flex bg-teal-700 text-white p-2 px-4 mb-2 rounded-xl transform -translate-y-3">Capacity: 40</Button>
-                </CardHeader>
-                <CardContent className='flex justify-center'>
-                  <img src='/Bus2.png' alt="Bus" width='78%' className="rounded-xl h-full" />
-                </CardContent>
-                <CardFooter className='flex justify-center'>
-                <Button className='bg-gray-800 px-5' onClick={handlePage}>Book Now</Button>                  
-                </CardFooter>
-            </Card>
-          </div>
-          <div className="p-3 pr-6"> 
-            <Card className="h-80 w-full bg-slate-200 hover:shadow-2xl transition-colors duration-100">
-                <CardHeader className='flex flex-row justify-between'>                  
-                  <CardTitle className='flex'>Goods Carriers</CardTitle>
-                  <Button variant='outline' className="flex bg-teal-700 text-white p-2 px-4 mb-2 rounded-xl transform -translate-y-3">Capacity: 1 ton</Button>
-                </CardHeader>
-                <CardContent className='flex justify-center'>
-                  <img src='/Truck.png' alt="Car" width='64%' className="rounded-xl h-full" />
-                </CardContent>
-                <CardFooter className='flex justify-center'>
-                <Button className='bg-gray-800 px-5' onClick={handlePage}>Book Now</Button>                  
-                </CardFooter>
-            </Card>
-          </div>
-                    
-        </div>
-      
+      </div>
+
     </div>
 
   );
