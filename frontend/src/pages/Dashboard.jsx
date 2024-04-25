@@ -16,7 +16,7 @@ const Dashboard = ({ onViewChange }) => {
   }
 
   return (
-    <div>
+    <div className="-mb-10">
       <div className="mt-6 flex justify-center items-center mb-10">
         <Input type="text" className="px-3 py-2 w-96" placeholder="Search..." />
         <Button className="px-3 py-2 ml-2">
@@ -70,7 +70,7 @@ const Dashboard = ({ onViewChange }) => {
 
       <div className="grid grid-cols-3 mb-10">
         <div className="p-3 pl-6">
-          <Card className="h-80 w-full bg-slate-200 hover:shadow-2xl transition-colors duration-100">
+          <Card className="h-[340px] w-full bg-slate-200 hover:shadow-2xl transition-colors duration-100">
             <CardHeader className='flex flex-row justify-between'>
               <CardTitle className='flex'>Car</CardTitle>
               <Button variant='outline' className="flex bg-teal-700 text-white p-2 px-4 mb-2 rounded-xl transform -translate-y-3">Capacity: 6</Button>
@@ -84,7 +84,7 @@ const Dashboard = ({ onViewChange }) => {
           </Card>
         </div>
         <div className="p-3">
-          <Card className="h-80 w-full bg-slate-200 hover:shadow-2xl transition-colors duration-100">
+          <Card className="h-[340px] w-full bg-slate-200 hover:shadow-2xl transition-colors duration-100">
             <CardHeader className='flex flex-row justify-between'>
               <CardTitle className='flex'>Bus</CardTitle>
               <Button variant='outline' className="flex bg-teal-700 text-white p-2 px-4 mb-2 rounded-xl transform -translate-y-3">Capacity: 40</Button>
@@ -98,7 +98,7 @@ const Dashboard = ({ onViewChange }) => {
           </Card>
         </div>
         <div className="p-3 pr-6">
-          <Card className="h-80 w-full bg-slate-200 hover:shadow-2xl transition-colors duration-100">
+          <Card className="h-[340px] w-full bg-slate-200 hover:shadow-2xl transition-colors duration-100">
             <CardHeader className='flex flex-row justify-between'>
               <CardTitle className='flex'>Goods Carriers</CardTitle>
               <Button variant='outline' className="flex bg-teal-700 text-white p-2 px-4 mb-2 rounded-xl transform -translate-y-3">Capacity: 1 ton</Button>
@@ -111,6 +111,26 @@ const Dashboard = ({ onViewChange }) => {
             </CardFooter>
           </Card>
         </div>
+
+        <footer className='grid grid-cols-3 bg-black text-white h-80 w-screen mt-10'>
+          <div className="p-16 pl-32">
+            <img src="/vite.png" alt="Logo" className='h-40 w-40 rounded-full' />
+            <p className="mt-2 font-mono font-extrabold text-xl">BIT Transports</p>
+          </div>
+          <div className="p-10 flex flex-col space-y-6">
+            <div className="hover:text-slate-200 mt-6 transform hover:scale-105 transition-all duration-200">Support</div>
+            <div className="hover:text-slate-200 transform hover:scale-105 transition-all duration-200">FAQ</div>
+            <div className="hover:text-slate-200 transform hover:scale-105 transition-all duration-200">Terms of Service</div>
+            <div className="hover:text-slate-200 transform hover:scale-105 transition-all duration-200">Privacy Policy</div>
+          </div>
+          <div className="-ml-20 mt-20">
+            <p className="text-xl">Contact us</p>
+            <div>
+            <Input type="text" placeholder="Email" className="mt-2 w-72" />
+            <Button className='mt-2'>Subscribe</Button>
+            </div>            
+          </div>
+        </footer>
 
       </div>
 
