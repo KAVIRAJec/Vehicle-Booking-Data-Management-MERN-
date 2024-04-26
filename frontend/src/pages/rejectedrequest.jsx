@@ -1,9 +1,11 @@
 import React from 'react'
 
 const Rejectedrequest = () => {
+
+  console.log(errorMessage);
   return (
-    <div>
-      Pending request
+    <div className='flex '>
+      Rejected request
     </div>
   )
 }

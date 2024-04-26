@@ -28,7 +28,6 @@ const initialValues = {
   start_time: "",
   return_time: "",
   purpose: "",
-  document: "",
   name: "",
   id: "",
   contact: "",
@@ -91,9 +90,6 @@ const Bookvehicle = () => {
     if (!values.purpose) {
       errors.purpose = "Purpose is required";
     }
-    //if (!values.document) {
-    //  errors.document = "Document is required";
-    //}
     return errors;
   };
 
@@ -243,15 +239,6 @@ const Bookvehicle = () => {
                 onChange={handleChange}
               />
               <p className='text-center text-red-500 text-xs italic'>{formErrors.purpose}</p>
-            </div>
-            <div className='flex items-center justify-end mt-5'>
-              <Label className='text-base font-semibold pr-4'>Attach Document</Label>
-            </div>
-            <div>
-              <Uploader className='w-[300px] mt-8' action="//jsonplaceholder.typicode.com/posts/">
-                <Button className=''>Select files...</Button>
-              </Uploader>
-              {/* <p className='text-start text-red-500 text-xs italic'>{formErrors.document}</p> */}
             </div>
           </div>
           

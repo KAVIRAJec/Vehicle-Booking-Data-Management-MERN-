@@ -34,9 +34,6 @@ const bookingSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    document: {
-        type: String,
-    },
     name: {
         type: String,
         required: true,
