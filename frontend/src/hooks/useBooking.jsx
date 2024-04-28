@@ -36,6 +36,7 @@ export default function useBooking() {
   export function readBooking() {
     const [loading, setLoading] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
+    const [data, setData] = useState(null);
   
     const readData = async (values) => {  
       try {
@@ -51,6 +52,7 @@ export default function useBooking() {
         const data = await res.json();
         if(res.status === 200) {
           setErrorMessage(data.message);
+          setData(data.data);
         } else if (res.status === 400) {
           setErrorMessage(data.message);
         }else {
@@ -63,5 +65,5 @@ export default function useBooking() {
        }
     };
     
-    return {loading, readData, errorMessage };
+    return {loading, readData, errorMessage, data };
   }
