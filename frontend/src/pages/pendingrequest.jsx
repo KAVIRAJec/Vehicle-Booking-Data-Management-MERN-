@@ -11,10 +11,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardTitle } from '@/components/ui/card';
 import { MetroSpinner } from 'react-spinners-kit';
 const { Column, HeaderCell, Cell } = Table;
