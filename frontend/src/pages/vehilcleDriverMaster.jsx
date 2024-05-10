@@ -5,9 +5,10 @@ import { toast } from 'sonner';
 import { MetroSpinner } from 'react-spinners-kit';
 import { Table, Pagination, SelectPicker } from 'rsuite';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 const { Column, HeaderCell, Cell } = Table;
 
-const Vehilclemaster = () => {
+const VehilcleDriverMaster = () => {
 
   const { loading, readAllData, errorMessage, data } = readAllVehicleDriver();
 
@@ -54,8 +55,12 @@ const Vehilclemaster = () => {
           Vehicle Driver Master
         </div>
         <div className='flex justify-end mt-12 mr-8 flex-grow'>
+        <Link to='/driverMaster'>
         <Button className='mx-2'>View Driver</Button>
+        </Link>
+        <Link to='/vehicleMaster'>
         <Button className='mx-2'>View Vehicle</Button>
+        </Link>
         </div>
       </div>
       {
@@ -94,9 +99,11 @@ const Vehilclemaster = () => {
                 </Column>
               </Table>
               <div className="flex justify-center mt-4">
+            <Link to='/vehicleDriverMaster/create'>
             <Button>
-              Create Vehicle Driver
+              Create Vehicle-Driver Master
             </Button>
+            </Link>
           </div>
               <div style={{ padding: 20 }}>
                 <Pagination
@@ -137,4 +144,4 @@ const Vehilclemaster = () => {
   )
 }
 
-export default Vehilclemaster
+export default VehilcleDriverMaster
