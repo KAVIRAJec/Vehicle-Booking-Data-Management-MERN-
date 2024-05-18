@@ -62,11 +62,10 @@ const Login = () => {
     return errors;
   };
 
-
   const { error,loading, loginUser, errorMessage } = useLogin();
   const handleLogin = async (values) => {
     loginUser(values);
-}
+  }
 
   return (
     <div className='flex justify-center items-center h-screen bg-gray-300'>

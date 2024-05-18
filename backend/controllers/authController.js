@@ -18,8 +18,8 @@ exports.signup = async (req,res,next) => {
         });
 
         //Assign JWT (json web token) to user
-        const token = jwt.sign({ _id: newUser._id }, 'secretkey123', {
-            expiresIn: '10m',
+        const token = jwt.sign({ _id: newUser._id }, process.env.SECRET_KEY, {
+            expiresIn: '6h',
         });
 
         res.status(201).json({
@@ -54,8 +54,8 @@ exports.login = async (req,res,next) => {
             return next(new createError('Invalid Email or Password',401));
         }
 
-        const token = jwt.sign({ id: user._id }, 'secretkey123', {
-            expiresIn: '10m',
+        const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY, {
+            expiresIn: '6h',
         });
 
         res.status(200).json({
@@ -92,8 +92,8 @@ exports.edit = async (req,res,next) => {
             { upsert: true, new: true, runValidators: true },
         );
     
-        const token = jwt.sign({ _id: EditedUser._id }, 'secretkey123', {
-            expiresIn: '10m',
+        const token = jwt.sign({ _id: EditedUser._id }, process.env.SECRET_KEY, {
+            expiresIn: '6h',
         });
     
         res.status(200).json({
