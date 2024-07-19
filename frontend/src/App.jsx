@@ -5,7 +5,7 @@ import Login from './Auth/Login';
 import Register from './Auth/Register';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from './contexts/AuthContext'
-import Home from './pages/home';  
+import Home from './pages/home';
 import CreateVehicleDriverPage from './pages/CreateVehicleDriver';
 import VehicleMaster from './pages/vehicleMaster';
 import DriverMaster from './pages/driverMaster';
@@ -15,39 +15,39 @@ import CreateDriverPage from './pages/CreateDriver';
 const App = () => {
   const { isAuthenticated } = useAuth();
 
-  return(
-    
-     <Router>
-    <Routes>
-      <Route 
-        path="/" 
-        element={!isAuthenticated ? <Register /> : <Navigate to="/home" />}
-      />
-      <Route 
-        path="/login"
-        element={!isAuthenticated ? <Login /> : <Navigate to="/home" />}
+  return (
+
+    <Router>
+      <Routes>
+        <Route
+          path="/"
+          element={!isAuthenticated ? <Register /> : <Navigate to="/home" />}
         />
-      <Route 
-        path="/home"
-        element={isAuthenticated ? <Home /> : <Login />}
-      />
-      <Route
-        path="/vehicleDriverMaster/create" element={<CreateVehicleDriverPage />}
-      />
-      <Route 
-        path="/vehicleMaster" element={<VehicleMaster />}
-      />
-      <Route 
-        path="/vehicle/create" element={<CreateVehiclePage />}
-      />
-      <Route 
-        path="/driverMaster" element={<DriverMaster />}
-      />
-      <Route 
-        path="/driver/create" element={<CreateDriverPage />}
-      />
-    </Routes>
-  </Router>
+        <Route
+          path="/login"
+          element={!isAuthenticated ? <Login /> : <Navigate to="/home" />}
+        />
+        <Route
+          path="/home"
+          element={isAuthenticated ? <Home /> : <Login />}
+        />
+        <Route
+          path="/vehicleDriverMaster/create" element={<CreateVehicleDriverPage />}
+        />
+        <Route
+          path="/vehicleMaster" element={<VehicleMaster />}
+        />
+        <Route
+          path="/vehicle/create" element={<CreateVehiclePage />}
+        />
+        <Route
+          path="/driverMaster" element={<DriverMaster />}
+        />
+        <Route
+          path="/driver/create" element={<CreateDriverPage />}
+        />
+      </Routes>
+    </Router>
   );
 };
 

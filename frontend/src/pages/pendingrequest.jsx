@@ -55,10 +55,10 @@ const Pendingrequest = () => {
   }, [updateErrorMessage]);
 
   function toasting() {
-    if (updateErrorMessage && updateErrorMessage.includes("Booking updated Successfully")) {
+    if (errorMessage && updateErrorMessage && updateErrorMessage.includes("Booking updated Successfully")) {
       toast.success(updateErrorMessage);
     } else {
-      toast.error(updateErrorMessage)
+      { errorMessage && toast.error(updateErrorMessage) }
     }
   }
 
@@ -99,7 +99,7 @@ const Pendingrequest = () => {
     { label: 'Reject', value: 'rejected' }
   ];
 
-  if (!data) {
+  if (!data && errorMessage) {
     { toast.error(errorMessage) }
   }
 
@@ -116,6 +116,7 @@ const Pendingrequest = () => {
           (bookingData && tableData ? (
             <div className='mt-6 ml-5 mr-5'>
               <Table
+                height={500}
                 data={tableData}
                 hover={hover}
                 bordered={bordered}
@@ -221,12 +222,12 @@ const Pendingrequest = () => {
                             </DialogHeader>
                             <DialogDescription>
                               make sure to give the reason
-                            </DialogDescription>                            
-                              <Input  
-                                placeholder="Enter Remarks"
-                                required  
-                                onChange={(e) => setRemarks(e.target.value)}
-                              />
+                            </DialogDescription>
+                            <Input
+                              placeholder="Enter Remarks"
+                              required
+                              onChange={(e) => setRemarks(e.target.value)}
+                            />
                             <DialogFooter>
                               <Button onClick={() => setIsDialogOpen(false)}>Cancel</Button>
                               <Button onClick={() => setIsDialogOpen(false)}>Save</Button>

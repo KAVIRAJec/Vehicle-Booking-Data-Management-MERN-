@@ -137,21 +137,25 @@ exports.editBooking = async (req, res, next) => {
         }
         
         const { _id } = req.body;
-
+        const availability = await VehicleDriver.findOne({ _id});
+        if(!availability){
+            return next(new createError('VehicleDriver not found',404));
+        }
+        if(availability.is_available === false){
+            return next(new createError('VehicleDriver is not available',404));
+        }
+        
         const availableUpdate = await VehicleDriver.findOneAndUpdate({ _id: _id }, { $set: { is_available: false } });
         if(!availableUpdate){
             return next(new createError('Error while assigning vehicle',404));
         }
 
-        const remarksObject = {
-            "Vehicle assigned": availableUpdate.vehicle_unique_no,
-            "Driver assigned": availableUpdate.driver_name
-        };
+        const remarksObject = `Vehicle: ${availableUpdate.vehicle_unique_no}, Driver: ${availableUpdate.driver_name}`;
         
         const updatedBooking = await Booking.findOneAndUpdate(
             { booking_id: req.body.booking_id },
             { status: req.body.status,
-              remarks: JSON.stringify(remarksObject)
+              remarks: remarksObject,
             },
             { upsert: true, new: true, runValidators: true },
         );

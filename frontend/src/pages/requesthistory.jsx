@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { readBooking } from '@/hooks/useBooking'
 import { toast } from "sonner"
+import { Toaster } from "@/components/ui/sonner"
 import { useAuth } from '@/contexts/AuthContext';
 import { Table, Pagination } from 'rsuite';
 import { Card, CardContent, CardTitle } from '@/components/ui/card';
@@ -15,8 +16,9 @@ const Requesthistory = () => {
   useEffect(() => {
     const fetchData = async () => {
       const email = { "email": userData.email };
-      await readData(email);
-      console.log("Error msg:", errorMessage);
+      readData(email);
+      if (errorMessage)
+        console.log("Error msg:", errorMessage);
     };
     fetchData();
   }, []);
@@ -33,11 +35,13 @@ const Requesthistory = () => {
     setLimit(dataKey);
   };
 
-  const bookingData = data ? data.booking : null;
+const bookingData = data && data.booking ? data.booking : [];
+
+console.log("Booking Data:", bookingData);
 
   useEffect(() => {
     if (data && data.booking) {
-      if (status) {
+      if (status && status !== " ") {
         setFilteredBookingData(data.booking.filter(booking => booking.status === status));
       } else {
         setFilteredBookingData(data.booking);
@@ -48,6 +52,7 @@ const Requesthistory = () => {
   }, [data, status]);
 
   let tableData;
+
   if (filteredBookingData) {
     tableData = filteredBookingData.filter((v, i) => {
       const start = limit * (page - 1);
@@ -56,12 +61,13 @@ const Requesthistory = () => {
     });
   }
 
-  if (!data) {
+  if (!data && errorMessage) {
     { toast.error(errorMessage) }
   }
 
   return (
     <div>
+      <Toaster />
       <div className='flex'>
         <div className='text-2xl text-black mt-12 ml-8 font-semibold'>
           Previously Booked Vehicle
@@ -170,7 +176,7 @@ const Requesthistory = () => {
                   <HeaderCell className='text-base text-black font-semibold'>Status</HeaderCell>
                   <Cell className='text-slate-950' dataKey="status" />
                 </Column>
-                <Column align="center" flexGrow={2} minWidth={250}>
+                <Column align="center" flexGrow={3}>
                   <HeaderCell className='text-base text-black font-semibold'>Remarks</HeaderCell>
                   <Cell className='text-slate-950' dataKey="remarks" />
                 </Column>

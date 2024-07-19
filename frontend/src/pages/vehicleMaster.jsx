@@ -22,7 +22,7 @@ const VehicleMaster = () => {
     }, []);
 
     const showToast = () => {
-        if (!data) {
+        if (!data && errorMessage) {
             { toast.error(errorMessage) }
         }
     }
