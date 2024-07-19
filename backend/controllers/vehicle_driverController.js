@@ -113,6 +113,23 @@ exports.readAllMapping = async (req, res, next) => {
     }
 }
 
+//Read available Mapping
+exports.readAvailableMapping = async (req, res, next) => {
+    try {
+        const mappings = await VehicleDriver.find({ is_available: true });
+
+        res.status(200).json({
+            status: 'success',
+            message: 'Mappings fetched Successfully',
+            data: {
+                mappings,
+            }
+        });
+    }catch (error){
+        next(error);
+    }
+}
+
 //Edit Driver Mapping
 exports.editDriverMapping = async ( req, res, next ) => {
     try{

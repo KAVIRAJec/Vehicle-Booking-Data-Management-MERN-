@@ -93,6 +93,7 @@ const Requesthistory = () => {
           (bookingData && tableData ? (
             <div className='mt-6 ml-5  mr-5'>
               <Table
+                height={500}
                 data={tableData}
                 hover={hover}
                 bordered={bordered}

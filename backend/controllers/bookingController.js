@@ -3,6 +3,8 @@ const User = require('../models/userModel');
 const { v4: uuidv4 } = require('uuid');
 const moment = require('moment');
 const createError = require('../utils/appError');
+const VehicleDriver = require('../models/vehicle_driverModel');
+const nodeSchedule = require('node-schedule');
 
 //Booking Creation
 exports.createBooking = async (req, res, next) => {
@@ -134,17 +136,39 @@ exports.editBooking = async (req, res, next) => {
             return next(new createError('Remarks are not required for approved status', 400));
         }
         
+        const { _id } = req.body;
+
+        const availableUpdate = await VehicleDriver.findOneAndUpdate({ _id: _id }, { $set: { is_available: false } });
+        if(!availableUpdate){
+            return next(new createError('Error while assigning vehicle',404));
+        }
+
+        const remarksObject = {
+            "Vehicle assigned": availableUpdate.vehicle_unique_no,
+            "Driver assigned": availableUpdate.driver_name
+        };
+        
         const updatedBooking = await Booking.findOneAndUpdate(
             { booking_id: req.body.booking_id },
             { status: req.body.status,
-              remarks:req.body.remarks
+              remarks: JSON.stringify(remarksObject)
             },
             { upsert: true, new: true, runValidators: true },
         );
-
+        
+        const returnTime = new Date(updatedBooking.return_time);
+        nodeSchedule.scheduleJob(returnTime, async function() {
+            try {
+                await VehicleDriver.findOneAndUpdate({ _id: _id }, { $set: { is_available: true } });
+                console.log('VehicleDriver availability updated to true');
+            } catch (error) {
+                console.error('Failed to update VehicleDriver availability:', error);
+            }
+        });
+        
         res.status(200).json({
             status: 'success',
-            message: 'Booking updated Successfully',
+            message: 'Booking updated & Assigned Successfully',
             data: {
                 updatedBooking,
             }

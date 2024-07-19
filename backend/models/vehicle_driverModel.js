@@ -11,6 +11,10 @@ const vehicleDriverSchema = new mongoose.Schema({
         required: true,
         ref: 'Driver',
     },
+    is_available: {
+        type: Boolean,
+        default: true,
+    },
 });
 
 const VehicleDriver = mongoose.model('VehicleDriver', vehicleDriverSchema);
