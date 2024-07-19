@@ -41,7 +41,7 @@ export function readBooking() {
   const readData = async (values) => {
     try {
       setLoading(true);
-      const res = await fetch('http://localhost:3005/booking/read', {
+      const res = await fetch(`${VITE_APP_BACKEND_URL}/booking/read`, {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',

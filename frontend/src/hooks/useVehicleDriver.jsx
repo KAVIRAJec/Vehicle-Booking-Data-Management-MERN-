@@ -42,7 +42,7 @@ export function readAllVehicleDriver() {
     const readAllData = async () => {
         try {
             setLoading(true);
-            const res = await fetch('http://localhost:3005/vehicle_driver/readAll', {
+            const res = await fetch(`${import.meta.env.VITE_APP_BACKEND_URL}/vehicle_driver/readAll`, {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json',

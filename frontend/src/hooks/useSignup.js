@@ -15,7 +15,7 @@ const useSignup = () => {
     try {
       setError(null);
       setLoading(true);
-      const res = await fetch('http://localhost:3005/api/auth/signup', {
+      const res = await fetch(`${VITE_APP_BACKEND_URL}/api/auth/signup`, {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',
