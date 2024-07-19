@@ -331,54 +331,54 @@ const Home = ({ initialView }) => {
             </div>
 
             <div className="flex">
-                <div className="flex-shrink-0 flex-col p-4 bg-zinc-200 max-h-full min-h-screen max-w-[20rem]">
+                <div className="flex-shrink-0 flex-col p-4 bg-zinc-200 max-h-full min-h-screen w-2/12">
                     <Toaster richColors position="top-center" />
-                    <div className="flex py-3 border-b-2 border-slate-400 cursor-pointer hover:text-slate-50" onClick={() => setView('dashboard')}>
-                        <LayoutDashboard className="h-8 w-8 text-slate-900 hover:h-9 w-9" />
-                        <Label className="block pl-3 mt-0.5 text-xl text-slate-900 cursor-pointer hover:text-[21px] hover:text-slate-600">Dashboard</Label>
+                    <div className="flex py-3 border-b-2 border-slate-400 cursor-pointer w-full hover:text-slate-50 hover:bg-gray-300 hover:rounded-2xl" onClick={() => setView('dashboard')}>
+                        <LayoutDashboard className="h-8 w-8 text-slate-900 hover:h-9" />
+                        <Label className="block pl-3 mt-0.5 text-xl text-slate-900 cursor-pointer hover:text-[21px] hover:text-slate-600 font-bold">Dashboard</Label>
                     </div>
 
                     {userData.role === 'user' && (
-                        <div className="flex my-3 cursor-pointer" onClick={() => setView('bookvehicle')}>
-                            <BusFront className="h-8 w-8 text-slate-900 hover:h-9 w-9" />
-                            <Label className="block ml-3 text-xl text-slate-900 cursor-pointer hover:text-[21px] hover:text-slate-600">Book Vehicle</Label>
+                        <div className="flex py-3 cursor-pointer w-full hover:bg-gray-300 hover:rounded-2xl" onClick={() => setView('bookvehicle')}>
+                            <BusFront className="h-8 w-8 text-slate-900 hover:h-9" />
+                            <Label className="block ml-3 text-xl text-slate-900 cursor-pointer hover:text-[21px] hover:text-slate-600 font-bold">Book Vehicle</Label>
                         </div>
                     )}
                     {userData.role === 'user' && (
-                        <div className="flex my-3 cursor-pointer" onClick={() => setView('requesthistory')}>
-                            <History className="h-8 w-8 text-slate-900 hover:h-9 w-9" />
-                            <Label className="block ml-3 text-xl text-slate-900 cursor-pointer hover:text-[21px] hover:text-slate-600">Request History</Label>
+                        <div className="flex py-3 cursor-pointer w-full hover:bg-gray-300 hover:rounded-2xl" onClick={() => setView('requesthistory')}>
+                            <History className="h-8 w-8 text-slate-900 hover:h-9" />
+                            <Label className="block ml-3 text-xl text-slate-900 cursor-pointer hover:text-[21px] hover:text-slate-600 font-bold">Request History</Label>
                         </div>
                     )}
 
                     {userData.role === 'admin' && (
-                        <div className="flex my-3 cursor-pointer" onClick={() => setView('pendingrequest')}>
-                            <History className="h-8 w-8 text-slate-900 hover:h-9 w-9" />
-                            <Label className="block ml-3 text-xl text-slate-900 cursor-pointer hover:text-[21px] hover:text-slate-600">Pending Request</Label>
+                        <div className="flex py-3 cursor-pointer w-full hover:bg-gray-300 hover:rounded-2xl" onClick={() => setView('pendingrequest')}>
+                            <History className="h-8 w-8 text-slate-900 hover:h-9" />
+                            <Label className="block ml-3 text-xl text-slate-900 cursor-pointer hover:text-[21px] hover:text-slate-600 font-bold">Pending Request</Label>
                         </div>
                     )}
                     {userData.role === 'admin' && (
-                        <div className="flex my-3 cursor-pointer" onClick={() => setView('approvedrequest')}>
-                            <CircleCheckBig className="h-7 w-8 text-slate-900 hover:h-9 w-9" />
-                            <Label className="block ml-3 text-xl text-slate-900 cursor-pointer hover:text-[20px] hover:text-slate-600">Approved Request</Label>
+                        <div className="flex py-3 cursor-pointer w-full hover:bg-gray-300 hover:rounded-2xl" onClick={() => setView('approvedrequest')}>
+                            <CircleCheckBig className="h-7 w-8 text-slate-900 hover:h-9" />
+                            <Label className="block ml-3 text-xl text-slate-900 cursor-pointer hover:text-[20px] hover:text-slate-600 font-bold">Approved Request</Label>
                         </div>
                     )}
                     {userData.role === 'admin' && (
-                        <div className="flex my-3 cursor-pointer" onClick={() => setView('rejectedrequest')}>
-                            <MdOutlineCancel className="h-8 w-8 text-slate-900 hover:h-9 w-9" />
-                            <Label className="block ml-3 text-xl text-slate-900 cursor-pointer hover:text-[21px] hover:text-slate-600">Rejected Request</Label>
+                        <div className="flex py-3 cursor-pointer w-full hover:bg-gray-300 hover:rounded-2xl" onClick={() => setView('rejectedrequest')}>
+                            <MdOutlineCancel className="h-8 w-8 text-slate-900 hover:h-9" />
+                            <Label className="block ml-3 text-xl text-slate-900 cursor-pointer hover:text-[21px] hover:text-slate-600 font-bold">Rejected Request</Label>
                         </div>
                     )}
                     {userData.role === 'admin' && (
-                        <div className="flex my-3 cursor-pointer" onClick={() => setView('vehiclemaster')}>
-                            <Cog className="h-8 w-8 text-slate-900 hover:h-9 w-9" />
-                            <Label className="block ml-3 text-xl text-slate-900 cursor-pointer hover:text-[21px] hover:text-slate-600">Vehicle Master</Label>
+                        <div className="flex py-3 cursor-pointer w-full hover:bg-gray-300 hover:rounded-2xl" onClick={() => setView('vehiclemaster')}>
+                            <Cog className="h-8 w-8 text-slate-900 hover:h-9" />
+                            <Label className="block ml-3 text-xl text-slate-900 cursor-pointer hover:text-[21px] hover:text-slate-600 font-bold">Vehicle Master</Label>
                         </div>
                     )}
-                    <div className="flex my-3">
-                        <button className="block flex" onClick={handleLogout}>
-                            <LogOut className="h-8 w-8 text-slate-900 cursor-pointer hover:h-9 w-9" />
-                            <Label className="block ml-3 text-xl text-slate-900 cursor-pointer hover:text-[21px] hover:text-slate-600">Log Out</Label>
+                    <div>
+                        <button className="flex py-3 cursor-pointer w-full hover:bg-gray-300 hover:rounded-2xl" onClick={handleLogout}>
+                            <LogOut className="h-8 w-8 text-slate-900 cursor-pointer hover:h-9" />
+                            <Label className="block ml-3 text-xl text-slate-900 cursor-pointer hover:text-[21px] hover:text-slate-600 font-bold">Log Out</Label>
                         </button>
                     </div>
                 </div>

@@ -5,7 +5,7 @@ import Login from './Auth/Login';
 import Register from './Auth/Register';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from './contexts/AuthContext'
-import Home from './pages/home';
+import Home from './pages/home';  
 import CreateVehicleDriverPage from './pages/CreateVehicleDriver';
 import VehicleMaster from './pages/vehicleMaster';
 import DriverMaster from './pages/driverMaster';
@@ -31,7 +31,7 @@ const App = () => {
         path="/home"
         element={isAuthenticated ? <Home /> : <Login />}
       />
-      <Route 
+      <Route
         path="/vehicleDriverMaster/create" element={<CreateVehicleDriverPage />}
       />
       <Route 
