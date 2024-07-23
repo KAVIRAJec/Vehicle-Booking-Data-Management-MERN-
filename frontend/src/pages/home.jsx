@@ -50,10 +50,13 @@ import { Input } from "@/components/ui/input.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import useEdit from "@/hooks/useEdit.js";
 import { ClassicSpinner } from "react-spinners-kit";
+import { useLocation } from "react-router-dom";
 
 const initialValues = { name: "", id: "", contact: "", email: "" };
 
 const Home = ({ initialView }) => {
+    const location = useLocation();
+
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
     const [isSubmit, setIsSubmit] = useState(false);
@@ -113,6 +116,10 @@ const Home = ({ initialView }) => {
     const handleViewChange = (newView) => {
         setView(newView);
     }
+    useEffect(() => {
+        const initialView = location.state ? location.state.initialView : 'dashboard';
+        handleViewChange(initialView);
+    }, [location.state]);
 
     const handleLogout = async () => {
         await logout();

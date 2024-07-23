@@ -19,7 +19,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { ClassicSpinner } from 'react-spinners-kit';
 import useBooking from '@/hooks/useBooking';
 import { Toaster, toast } from "sonner"
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const initialValues = {
   vehicle_type: "",
@@ -104,18 +104,24 @@ const CreateVehicleDriverPage = () => {
       toast.error("Complete the Profile to submit form")
     }
     if (errorMessage && errorMessage.includes("Successful")) {
-      toast.success(errorMessage);
+      toast.success(errorMessage).then(() => {
+        navigateWithState();
+      });
     } else {
       toast.error(errorMessage);
     }
   };
   
+  const navigate = useNavigate();
 
+  const navigateWithState = () => {
+    navigate('/home', { state: { initialView: 'vehiclemaster' } });
+  };
   return (
     <div className='flex flex-col items-center mt-14'>
     
       <Card className='mb-20 pb-12 w-9/12 justify-center bg-neutral-200'>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} >
           <CardTitle className='flex justify-center mt-10 text-3xl text-slate-950'>Assign driver with a vehicle</CardTitle>
           <CardDescription className='flex justify-center text-base mt-2'>Make sure to fill all the details carefully.Please contact for any queries</CardDescription>
 
@@ -180,9 +186,8 @@ const CreateVehicleDriverPage = () => {
         </form>
       </Card>
 
-      <Link to="/home">
-      <Button className='mb-20'>Go Back</Button>
-      </Link>
+      <Button className='mb-20' onClick={navigateWithState}>Go Back</Button>
+
     </div>
 
   )
