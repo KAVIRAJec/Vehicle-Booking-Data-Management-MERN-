@@ -15,6 +15,9 @@ import {
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardTitle } from '@/components/ui/card';
 import { MetroSpinner } from 'react-spinners-kit';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { readAvailableVehicleDriver } from '@/hooks/useVehicleDriver';
+import { set } from 'date-fns';
 const { Column, HeaderCell, Cell } = Table;
 
 const Pendingrequest = () => {
@@ -22,86 +25,118 @@ const Pendingrequest = () => {
   const { userData } = useAuth();
   const { loading, readData, errorMessage, data } = readAllBooking();
   const { updateLoading, updateData, updateErrorMessage } = updateBooking();
+  const { availableLoading, readAvailableData, loadingMessage, availableData } = readAvailableVehicleDriver();
 
   const [booking_id, setBooking_id] = useState(null);
+  const [vh_id, setVH_id] = useState(null);
   const [status, setStatus] = useState(null);
   const [remarks, setRemarks] = useState(null);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
+  const [approveDialogOpen, setApproveDialogOpen] = useState(false);
 
   useEffect(() => {
     if (status === 'rejected') {
-      setIsDialogOpen(true);
+      setRejectDialogOpen(true);
+    }
+    if (status === 'approved') {
+      setApproveDialogOpen(true);
     }
   }, [status]);
 
+  const [selection, setSelection] = useState(false);
   useEffect(() => {
     const updateItems = async () => {
       const update = {
         "booking_id": booking_id,
         "status": status,
         "remarks": remarks,
+        "_id": vh_id,
         "email": userData.email,
       };
       await updateData(update);
       console.log("update Error msg:", updateErrorMessage);
     };
-    if (booking_id && (status === 'approved' || status === 'rejected')) {
+    if (booking_id && ((status === 'approved' && vh_id) || status === 'rejected')) {
       updateItems();
     }
-  }, [booking_id, status, remarks]);
+  }, [booking_id, vh_id, status, remarks]);
 
   useEffect(() => {
     toasting();
   }, [updateErrorMessage]);
 
   function toasting() {
-    if (errorMessage && updateErrorMessage && updateErrorMessage.includes("Booking updated Successfully")) {
+    if (errorMessage && updateErrorMessage && updateErrorMessage.includes("Successfully")) {
       toast.success(updateErrorMessage);
     } else {
       { errorMessage && toast.error(updateErrorMessage) }
     }
   }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const email = { "email": userData.email };
-      await readData(email);
-      console.log("Error msg:", errorMessage);
-    };
-    fetchData();
-  }, []);
+  const fetchData = async () => {
+    const email = { "email": userData.email };
+    await readData(email);
+    console.log("Error msg:", errorMessage);
+  };
 
+  const fetchAvailable = async () => {
+    await readAvailableData();
+    console.log("Error msg:", loadingMessage)
+  };
+
+  useEffect(() => {
+    fetchData();
+    fetchAvailable();
+    setSelection(false);
+    setApproveDialogOpen(false)
+
+  }, [selection]);
+  
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
   const [bordered, setBordered] = useState(true);
   const [hover, setHover] = useState(true);
-
+  const [bookingData, setBookingData] = useState(null);
+  const [tableData, setTableData] = useState([]);
+  
   const handleChangeLimit = dataKey => {
     setPage(1);
     setLimit(dataKey);
   };
-
-  const bookingData = data ? data.bookings : null;
-
-  let tableData;
-  if (bookingData) {
-    tableData = bookingData
-      .filter(booking => booking.status === 'pending')
-      .filter((v, i) => {
-        const start = limit * (page - 1);
-        const end = start + limit;
-        return i >= start && i < end;
-      });
-  }
+  
+  useEffect(() => {
+    if (data && data.bookings && data.bookings.length > 0)
+      setBookingData(data.bookings);
+  }, [data]);
+  
+  useEffect(() => {
+    if (bookingData) {
+      const filteredData = bookingData
+        .filter(booking => booking.status === 'pending')
+        .filter((v, i) => {
+          const start = limit * (page - 1);
+          const end = start + limit;
+          return i >= start && i < end;
+        });
+      setTableData(filteredData);
+    }
+  }, [bookingData]);
 
   const selectData = [
     { label: 'Approve', value: 'approved' },
     { label: 'Reject', value: 'rejected' }
   ];
-
-  if (!data && errorMessage) {
-    { toast.error(errorMessage) }
-  }
+  useEffect(() => {
+    if (!data && errorMessage) {
+      if (errorMessage.includes("Success")) { toast(errorMessage) }
+      else { toast(errorMessage) }
+    }
+    else if (loadingMessage && (loadingMessage.includes("Success"))) {
+      { toast.success(loadingMessage) }
+    } else if (loadingMessage) {
+      { toast(loadingMessage) }
+    }
+  }, [loadingMessage]);
 
   return (
     <div>
@@ -215,7 +250,7 @@ const Pendingrequest = () => {
                     {rowData => (
                       <div className="-mt-[10px]">
 
-                        <Dialog open={isDialogOpen}>
+                        <Dialog open={rejectDialogOpen}>
                           <DialogContent>
                             <DialogHeader>
                               <DialogTitle>Remarks for Rejection</DialogTitle>
@@ -229,8 +264,37 @@ const Pendingrequest = () => {
                               onChange={(e) => setRemarks(e.target.value)}
                             />
                             <DialogFooter>
-                              <Button onClick={() => setIsDialogOpen(false)}>Cancel</Button>
-                              <Button onClick={() => setIsDialogOpen(false)}>Save</Button>
+                              <Button onClick={() => setRejectDialogOpen(false)}>Cancel</Button>
+                              <Button onClick={() => setRejectDialogOpen(false)}>Save</Button>
+                            </DialogFooter>
+                          </DialogContent>
+                        </Dialog>
+                        <Dialog open={approveDialogOpen}>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle>Choose & Assign Vehicle-Driver below</DialogTitle>
+                            </DialogHeader>
+                            <DialogDescription>
+                              make sure to choose correct vehicle and driver
+                            </DialogDescription>
+                            <Select onValueChange={(value) => { setVH_id(value); setSelection(true) }}>
+                              <SelectTrigger className='flex justify-center items-center'>
+                                <SelectValue placeholder="Vehicle Driver" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {availableData && availableData.mappings.length === 0 &&
+                                  <SelectItem className="flex items-center justify-center font-bold" value=" ">No Vehicle-Driver Available currently</SelectItem>
+                                }
+                                {availableData && availableData.mappings.map((item) => (
+                                  <SelectItem value={item._id} className="flex items-center justify-center font-semibold">
+                                    Vehicle: {item.vehicle_unique_no} Driver: {item.driver_name}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            <DialogFooter>
+                              <Button onClick={() => setApproveDialogOpen(false)}>Cancel</Button>
+                              <Button onClick={() => setApproveDialogOpen(false)}>Save</Button>
                             </DialogFooter>
                           </DialogContent>
                         </Dialog>
@@ -241,7 +305,10 @@ const Pendingrequest = () => {
                             setBooking_id(rowData.booking_id);
                             setStatus(value);
                             if (value === 'rejected') {
-                              setIsDialogOpen(true);
+                              setRejectDialogOpen(true);
+                            }
+                            if (value === 'approved') {
+                              setApproveDialogOpen(true);
                             }
                             console.log("Set values", rowData.booking_id, value, remarks);
                           }}
