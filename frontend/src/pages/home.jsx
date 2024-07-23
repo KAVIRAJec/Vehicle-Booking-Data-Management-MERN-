@@ -42,7 +42,7 @@ import { MdManageAccounts, MdOutlineCancel } from "react-icons/md";
 import Dashboard from "./Dashboard.jsx";
 import Bookvehicle from "./bookvehicle";
 import Requesthistory from "./requesthistory";
-import VehilcleDriverMaster from "./vehilcleDriverMaster.jsx";
+import VehicleDriverMaster from "./vehicleDriverMaster.jsx";
 import Pendingrequest from "./pendingrequest.jsx";
 import Approvedrequest from "./approvedrequest.jsx";
 import Rejectedrequest from "./rejectedrequest.jsx";
@@ -129,7 +129,7 @@ const Home = ({ initialView }) => {
             case 'pendingrequest':
                 return <Pendingrequest />//admin
             case 'vehiclemaster':
-                return <VehilcleDriverMaster />;//admin
+                return <VehicleDriverMaster />;//admin
             case 'approvedrequest':
                 return <Approvedrequest />//admin
             case 'rejectedrequest':
