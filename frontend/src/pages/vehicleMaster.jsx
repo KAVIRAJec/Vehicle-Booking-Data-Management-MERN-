@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import { MetroSpinner } from 'react-spinners-kit';
 import { Table, Pagination, SelectPicker } from 'rsuite';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 const { Column, HeaderCell, Cell } = Table;
 
 const VehicleMaster = () => {
@@ -48,16 +48,24 @@ const VehicleMaster = () => {
         });
     }
 
+    const navigate = useNavigate();
+    const navigateWithState = () => {
+        navigate('/home', { state: { initialView: 'vehiclemaster' } });
+    };
+
     return (
         <div>
             <div className='flex'>
-                <div className='text-2xl text-black mt-12 ml-8 font-semibold'>
-                    Vehicle Master
+                <div className='flex flex-col'>
+                    <div className='text-3xl text-black mt-12 ml-8 font-semibold'>
+                        Vehicle Master
+                    </div>
+                    <div className='text-lg text-black mt-1 ml-8'>
+                        Here is the list of all vehicles details
+                    </div>
                 </div>
                 <div className='flex justify-end mt-12 mr-8 flex-grow'>
-                    <Link to="/home">
-                        <Button className='mb-20 mr-10'>Go Back</Button>
-                    </Link>
+                    <Button className='mb-20 mr-10' onClick={navigateWithState}>Go Back</Button>
                 </div>
             </div>
             {

@@ -51,8 +51,13 @@ const VehilcleDriverMaster = () => {
   return (
     <div>
       <div className='flex'>
-        <div className='text-2xl text-black mt-12 ml-8 font-semibold'>
-          Vehicle Driver Master
+        <div className='flex flex-col'>
+          <div className='text-3xl text-black mt-12 ml-8 font-bold'>
+            Vehicle Driver Master
+          </div>
+          <div className='text-lg text-black mt-1 ml-8'>
+            Here is the vehicle & driver which are linked together
+          </div>
         </div>
         <div className='flex justify-end mt-12 mr-8 flex-grow'>
           <Link to='/driverMaster'>
@@ -69,7 +74,7 @@ const VehilcleDriverMaster = () => {
           (masterData && tableData ? (
             <div className='mt-6 ml-5  mr-5'>
               <Table
-                height={400}
+                height={350}
                 data={tableData}
                 hover={hover}
                 bordered={bordered}

@@ -91,24 +91,24 @@ const Pendingrequest = () => {
     setApproveDialogOpen(false)
 
   }, [selection]);
-  
+
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
   const [bordered, setBordered] = useState(true);
   const [hover, setHover] = useState(true);
   const [bookingData, setBookingData] = useState(null);
   const [tableData, setTableData] = useState([]);
-  
+
   const handleChangeLimit = dataKey => {
     setPage(1);
     setLimit(dataKey);
   };
-  
+
   useEffect(() => {
     if (data && data.bookings && data.bookings.length > 0)
       setBookingData(data.bookings);
   }, [data]);
-  
+
   useEffect(() => {
     if (bookingData) {
       const filteredData = bookingData
@@ -141,8 +141,13 @@ const Pendingrequest = () => {
   return (
     <div>
       <div className='flex'>
-        <div className='text-2xl text-black mt-12 ml-8 font-semibold'>
-          Request to be Approved
+        <div className='flex flex-col'>
+          <div className='text-3xl text-black mt-12 ml-8 font-semibold'>
+            Request to be Approved
+          </div>
+          <div className='text-lg text-black mt-1 ml-8'>
+            Here is the request that are booked by clients
+          </div>
         </div>
       </div>
       {
@@ -151,7 +156,7 @@ const Pendingrequest = () => {
           (bookingData && tableData ? (
             <div className='mt-6 ml-5 mr-5'>
               <Table
-                height={500}
+                height={400}
                 data={tableData}
                 hover={hover}
                 bordered={bordered}

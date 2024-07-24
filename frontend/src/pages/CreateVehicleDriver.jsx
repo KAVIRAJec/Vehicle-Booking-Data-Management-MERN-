@@ -98,7 +98,7 @@ const CreateVehicleDriverPage = () => {
         <Card className='mb-20 pb-12 w-9/12 justify-center bg-neutral-200'>
         <Toaster richColors position="top-center" />
           <form onSubmit={handleSubmit} >
-            <CardTitle className='flex justify-center mt-10 text-3xl text-slate-950'>Assign driver with a vehicle</CardTitle>
+            <CardTitle className='flex justify-center mt-10 text-3xl text-slate-950'>Choose to assign driver with a vehicle</CardTitle>
             <CardDescription className='flex justify-center text-base mt-2'>Make sure to fill all the details carefully.Please contact for any queries</CardDescription>
 
             <div className='grid grid-cols-2'>

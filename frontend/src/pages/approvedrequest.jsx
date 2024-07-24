@@ -50,8 +50,13 @@ const Approvedrequest = () => {
   return (
     <div>
       <div className='flex'>
-        <div className='text-2xl text-black mt-12 ml-8 font-semibold'>
+      <div className='flex flex-col'>
+        <div className='text-3xl text-black mt-12 ml-8 font-semibold'>
           Approved Bookings
+        </div>
+        <div className='text-lg text-black mt-1 ml-8'>
+            Here is the list of all approved bookings
+          </div>
         </div>
       </div>
       {
@@ -60,7 +65,7 @@ const Approvedrequest = () => {
        (bookingData && tableData ? (
         <div className='mt-6 ml-5  mr-5'>
         <Table
-            height={500}
+            height={400}
             data={tableData}
             hover={hover}
             bordered={bordered}
