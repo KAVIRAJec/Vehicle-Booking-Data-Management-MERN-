@@ -7,7 +7,7 @@ export default function useBooking() {
   const bookForm = async (values) => {
     try {
       setLoading(true);
-      const res = await fetch('http://localhost:3005/booking/create', {
+      const res = await fetch(`${import.meta.env.VITE_APP_BACKEND_URL}/booking/create`, {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',
@@ -41,7 +41,7 @@ export function readBooking() {
   const readData = async (values) => {
     try {
       setLoading(true);
-      const res = await fetch(`${VITE_APP_BACKEND_URL}/booking/read`, {
+      const res = await fetch(`${import.meta.env.VITE_APP_BACKEND_URL}/booking/read`, {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',
@@ -76,7 +76,7 @@ export function readAllBooking() {
   const readData = async (values) => {
     try {
       setLoading(true);
-      const res = await fetch('http://localhost:3005/booking/readAll', {
+      const res = await fetch(`${import.meta.env.VITE_APP_BACKEND_URL}/booking/readAll`, {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',
@@ -110,7 +110,7 @@ export function updateBooking() {
   const updateData = async (values) => {
     try {
       setUpdateLoading(true);
-      const res = await fetch('http://localhost:3005/booking/update', {
+      const res = await fetch(`${import.meta.env.VITE_APP_BACKEND_URL}/booking/update`, {
         method: 'PATCH',
         headers: {
           'Content-type': 'application/json',

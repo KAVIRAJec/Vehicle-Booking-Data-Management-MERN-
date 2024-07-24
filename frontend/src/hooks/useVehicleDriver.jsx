@@ -8,7 +8,7 @@ export default function readVehicleDriver() {
     const readData = async (values) => {
         try {
             setLoading(true);
-            const res = await fetch('http://localhost:3005/vehicle_driver/read', {
+            const res = await fetch(`${import.meta.env.VITE_APP_BACKEND_URL}/vehicle_driver/read`, {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json', 

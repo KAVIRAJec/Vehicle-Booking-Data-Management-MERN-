@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
+
 import { Card, CardDescription, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import {
@@ -12,14 +13,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { FaCalendar } from 'react-icons/fa';
-import { DatePicker } from 'rsuite';
-import { Uploader } from 'rsuite';
-import { useAuth } from '@/contexts/AuthContext';
 import { ClassicSpinner } from 'react-spinners-kit';
+import { toast } from "sonner"
+
+import { useAuth } from '@/contexts/AuthContext';
 import useBooking from '@/hooks/useBooking';
-import { Toaster, toast } from "sonner"
-import { Link, useNavigate } from 'react-router-dom';
+import { readAvailableDriver } from '@/hooks/useDriver';
 
 const initialValues = {
   vehicle_type: "",
@@ -38,10 +37,18 @@ const initialValues = {
 const CreateVehicleDriverPage = () => {
 
   const { userData, logout } = useAuth();
-  
+  const { readAvailableLoading, getReadAvailable, readAvailableMessage, readAvailableData } = readAvailableDriver();
+
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await getReadAvailable();
+    };
+    fetchData();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -100,7 +107,7 @@ const CreateVehicleDriverPage = () => {
     console.log(values);
     bookForm(values);
     console.log(errorMessage);
-    if(userData.name==null || userData.id==undefined || userData.contact==null || userData.email==null){
+    if (userData.name == null || userData.id == undefined || userData.contact == null || userData.email == null) {
       toast.error("Complete the Profile to submit form")
     }
     if (errorMessage && errorMessage.includes("Successful")) {
@@ -111,7 +118,7 @@ const CreateVehicleDriverPage = () => {
       toast.error(errorMessage);
     }
   };
-  
+
   const navigate = useNavigate();
 
   const navigateWithState = () => {
@@ -119,7 +126,7 @@ const CreateVehicleDriverPage = () => {
   };
   return (
     <div className='flex flex-col items-center mt-14'>
-    
+
       <Card className='mb-20 pb-12 w-9/12 justify-center bg-neutral-200'>
         <form onSubmit={handleSubmit} >
           <CardTitle className='flex justify-center mt-10 text-3xl text-slate-950'>Assign driver with a vehicle</CardTitle>
@@ -139,11 +146,15 @@ const CreateVehicleDriverPage = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectLabel>Vehicle Type</SelectLabel>
-                    <SelectItem value="Bus">Bus</SelectItem>
-                    <SelectItem value="Car">Car</SelectItem>
-                    <SelectItem value="Battery Vehicle">Battery Vehicle</SelectItem>
-                    <SelectItem value="Good Carriers">Good Carriers</SelectItem>
+                    <SelectLabel className='ml-8'>Select Driver name below</SelectLabel>
+                    {readAvailableData && readAvailableData.length === 0 &&
+                      <SelectItem className="flex items-center justify-center font-bold" value=" ">No Driver available now</SelectItem>
+                    }
+                    {readAvailableData && readAvailableData.map((item) => (
+                      <SelectItem key={item._id} value={item.name} className="flex items-center justify-center font-semibold">
+                        {item.name}
+                      </SelectItem>
+                    ))}
                   </SelectGroup>
                 </SelectContent>
               </Select>
@@ -171,14 +182,14 @@ const CreateVehicleDriverPage = () => {
                 </SelectContent>
               </Select>
               <p className='text-center text-red-500 text-xs italic'>{formErrors.vehicle_type}</p>
-            </div>            
+            </div>
           </div>
-          
+
           <div className='flex justify-center mt-8'>
             <Button
               type={`${loading ? '' : 'primary'}`}
               appearance="primary"
-              className='h-12 w-24 text-base'              
+              className='h-12 w-24 text-base'
             >
               {loading ? <ClassicSpinner /> : 'Submit'}
             </Button>
