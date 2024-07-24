@@ -1,6 +1,42 @@
 import { useState } from "react";
 
-export default function readVehicleDriver() {
+//Create Vehicle-Driver
+export default function createVD() {
+    const [createVDLoading, setCreateVDLoading] = useState(null);
+    const [createVDMessage, setCreateVDMessage] = useState(null);
+    const [createVDData, setCreateVDData] = useState(null);
+
+    const getCreateVD = async (values) => {
+        try {
+            setCreateVDLoading(true);
+            const res = await fetch(`${import.meta.env.VITE_APP_BACKEND_URL}/vehicle_driver/create`, {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json', 
+                },
+                body: JSON.stringify(values)
+            });
+
+            const data = await res.json();
+            if(res.status === 200) {
+                setCreateVDMessage(data.message);
+                setCreateVDData(data.data);
+            } else if(res.status === 400) {
+                setCreateVDMessage(data.message);
+            }else {
+                setCreateVDMessage(data.message);
+            }
+        } catch (error){
+            setCreateVDMessage(error);
+            //console.log('error:', error);
+        }finally{
+            setCreateVDLoading(false);
+        }
+    };
+        return { createVDLoading, getCreateVD, createVDMessage, createVDData };
+}
+
+export function readVehicleDriver() {
     const [loading, setLoading] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
     const [data, setData] = useState(null);

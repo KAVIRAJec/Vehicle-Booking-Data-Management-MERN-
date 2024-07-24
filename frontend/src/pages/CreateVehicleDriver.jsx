@@ -14,30 +14,23 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { ClassicSpinner } from 'react-spinners-kit';
-import { toast } from "sonner"
+import { Toaster, toast } from "sonner"
 
 import { useAuth } from '@/contexts/AuthContext';
-import useBooking from '@/hooks/useBooking';
 import { readAvailableDriver } from '@/hooks/useDriver';
+import { readAvailableVehicle } from '@/hooks/useVehicle';
+import createVD from '@/hooks/useVehicleDriver';
 
 const initialValues = {
-  vehicle_type: "",
-  people: "",
-  start: "",
-  destination: "",
-  start_time: "",
-  return_time: "",
-  purpose: "",
-  name: "",
-  id: "",
-  contact: "",
-  email: "",
+  vehicle_unique_no: "",
+  driver_name: "",
 };
 
 const CreateVehicleDriverPage = () => {
 
   const { userData, logout } = useAuth();
   const { readAvailableLoading, getReadAvailable, readAvailableMessage, readAvailableData } = readAvailableDriver();
+  const { readAvailableVLoading, getReadAvailableV, readAvailableVMessage, readAvailableVData } = readAvailableVehicle();
 
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
@@ -46,28 +39,21 @@ const CreateVehicleDriverPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       await getReadAvailable();
+      await getReadAvailableV();
     };
     fetchData();
   }, []);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  const handleChange = (name, value) => {
     setFormValues({ ...formValues, [name]: value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setFormValues({
-      ...formValues,
-      name: userData.name,
-      id: userData.id,
-      contact: userData.contact,
-      email: userData.email,
-    });
     const errors = validate(formValues);
     setFormErrors(errors);
     setIsSubmit(true);
-  }
+  };
 
   useEffect(() => {
     if (Object.keys(formErrors).length === 0 && isSubmit) {
@@ -77,131 +63,119 @@ const CreateVehicleDriverPage = () => {
 
   const validate = (values) => {
     const errors = {};
-    if (!values.vehicle_type) {
-      errors.vehicle_type = "Vehicle Type is required";
+    if (!values.vehicle_unique_no) {
+      errors.vehicle_unique_no = 'Vehicle Number is required';
     }
-    if (!values.people) {
-      errors.people = "Number of people is required";
-    }
-    if (!values.start) {
-      errors.start = "Starting Place is required";
-    }
-    if (!values.destination) {
-      errors.destination = "Reaching Place is required";
-    }
-    if (!values.start_time) {
-      errors.start_time = "Starting time is required";
-    }
-    if (!values.return_time) {
-      errors.return_time = "Returning Place is required";
-    }
-    if (!values.purpose) {
-      errors.purpose = "Purpose is required";
+    if (!values.driver_name) {
+      errors.driver_name = 'Driver Name is required';
     }
     return errors;
   };
 
-  const { loading, bookForm, errorMessage } = useBooking();
+  const { createVDLoading, getCreateVD, createVDMessage, createVDData } = createVD();
 
   const handleBooking = async (values) => {
-    console.log(values);
-    bookForm(values);
-    console.log(errorMessage);
-    if (userData.name == null || userData.id == undefined || userData.contact == null || userData.email == null) {
-      toast.error("Complete the Profile to submit form")
-    }
-    if (errorMessage && errorMessage.includes("Successful")) {
-      toast.success(errorMessage).then(() => {
-        navigateWithState();
-      });
-    } else {
-      toast.error(errorMessage);
-    }
+    getCreateVD(values);
   };
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    if (createVDMessage && createVDMessage.includes('Successful')) {
+      { toast.success(createVDMessage) }
+    } else if(createVDMessage) {
+      { toast.error(createVDMessage); }
+    }
+    //console.log ('createVDMessage:', createVDMessage);
+  }, [createVDMessage]);
 
-  const navigateWithState = () => {
-    navigate('/home', { state: { initialView: 'vehiclemaster' } });
-  };
-  return (
-    <div className='flex flex-col items-center mt-14'>
+    const navigate = useNavigate();
+    const navigateWithState = () => {
+      navigate('/home', { state: { initialView: 'vehiclemaster' } });
+    };
 
-      <Card className='mb-20 pb-12 w-9/12 justify-center bg-neutral-200'>
-        <form onSubmit={handleSubmit} >
-          <CardTitle className='flex justify-center mt-10 text-3xl text-slate-950'>Assign driver with a vehicle</CardTitle>
-          <CardDescription className='flex justify-center text-base mt-2'>Make sure to fill all the details carefully.Please contact for any queries</CardDescription>
+    return (
+      <div className='flex flex-col items-center mt-14'>
+      
+        <Card className='mb-20 pb-12 w-9/12 justify-center bg-neutral-200'>
+        <Toaster richColors position="top-center" />
+          <form onSubmit={handleSubmit} >
+            <CardTitle className='flex justify-center mt-10 text-3xl text-slate-950'>Assign driver with a vehicle</CardTitle>
+            <CardDescription className='flex justify-center text-base mt-2'>Make sure to fill all the details carefully.Please contact for any queries</CardDescription>
 
-          <div className='grid grid-cols-2'>
-            <div className='flex items-center justify-end mt-8'>
-              <Label className='text-base font-semibold pr-4'>Driver Name</Label>
+            <div className='grid grid-cols-2'>
+              <div className='flex items-center justify-end mt-8'>
+                <Label className='text-base font-semibold pr-4'>Driver Name</Label>
+              </div>
+              <div>
+                <Select
+                  onChange={handleChange}
+                  onValueChange={(value) => setFormValues({ ...formValues, driver_name: value })}
+                >
+                  <SelectTrigger className="w-[300px] mt-8">
+                    <SelectValue placeholder="Choose a driver" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel className='ml-8'>Select Driver name below</SelectLabel>
+                      {readAvailableData && readAvailableData.length === 0 &&
+                        <SelectItem className="flex items-center justify-center font-bold" value=" ">No Driver available now</SelectItem>
+                      }
+                      {readAvailableData && readAvailableData.map((item) => (
+                        <SelectItem key={item._id} value={item.name} className="flex items-center justify-center font-semibold">
+                          {item.name}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+                <p className='text-red-500 text-xs italic'>{formErrors.driver_name}</p>
+              </div>
+
+              <div className='flex items-center justify-end mt-8'>
+                <Label className='text-base font-semibold pr-4'>Vehicle Number</Label>
+              </div>
+              <div>
+                <Select
+                  onChange={handleChange}
+                  onValueChange={(value) => setFormValues({ ...formValues, vehicle_unique_no: value })}
+                >
+                  <SelectTrigger className="w-[300px] mt-8">
+                    <SelectValue placeholder="Choose a vehicle" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel className='ml-8'>Select Vehicle name below</SelectLabel>
+                      {readAvailableVData && readAvailableVData.length === 0 &&
+                        <SelectItem className="flex items-center justify-center font-bold" value=" ">No Vehicle available now</SelectItem>
+                      }
+                      {readAvailableVData && readAvailableVData.map((item) => (
+                        <SelectItem key={item._id} value={item.unique_no.toString()} className="flex items-center justify-center font-semibold">
+                          {item.vehicle_type} - {item.unique_no}({item.vehicle_no})
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+                <p className='text-red-500 text-xs italic'>{formErrors.vehicle_unique_no}</p>
+              </div>
             </div>
-            <div>
-              <Select
-                onChange={handleChange}
-                onValueChange={(value) => setFormValues({ ...formValues, vehicle_type: value })}
+
+            <div className='flex justify-center mt-8'>
+              <Button
+                type={`${createVDLoading ? '' : 'primary'}`}
+                appearance="primary"
+                className='h-12 w-24 text-base'
               >
-                <SelectTrigger className="w-[300px] mt-8">
-                  <SelectValue placeholder="Choose a driver" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel className='ml-8'>Select Driver name below</SelectLabel>
-                    {readAvailableData && readAvailableData.length === 0 &&
-                      <SelectItem className="flex items-center justify-center font-bold" value=" ">No Driver available now</SelectItem>
-                    }
-                    {readAvailableData && readAvailableData.map((item) => (
-                      <SelectItem key={item._id} value={item.name} className="flex items-center justify-center font-semibold">
-                        {item.name}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-              <p className='text-center text-red-500 text-xs italic'>{formErrors.vehicle_type}</p>
+                {createVDLoading ? <ClassicSpinner /> : 'Submit'}
+              </Button>
             </div>
-            <div className='flex items-center justify-end mt-8'>
-              <Label className='text-base font-semibold pr-4'>Vehicle Number</Label>
-            </div>
-            <div>
-              <Select
-                onChange={handleChange}
-                onValueChange={(value) => setFormValues({ ...formValues, vehicle_type: value })}
-              >
-                <SelectTrigger className="w-[300px] mt-8">
-                  <SelectValue placeholder="Choose a vehicle" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Vehicle Type</SelectLabel>
-                    <SelectItem value="Bus">Bus</SelectItem>
-                    <SelectItem value="Car">Car</SelectItem>
-                    <SelectItem value="Battery Vehicle">Battery Vehicle</SelectItem>
-                    <SelectItem value="Good Carriers">Good Carriers</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-              <p className='text-center text-red-500 text-xs italic'>{formErrors.vehicle_type}</p>
-            </div>
-          </div>
+          </form>
+        </Card>
 
-          <div className='flex justify-center mt-8'>
-            <Button
-              type={`${loading ? '' : 'primary'}`}
-              appearance="primary"
-              className='h-12 w-24 text-base'
-            >
-              {loading ? <ClassicSpinner /> : 'Submit'}
-            </Button>
-          </div>
-        </form>
-      </Card>
+        <Button className='mb-20' onClick={navigateWithState}>Go Back</Button>
 
-      <Button className='mb-20' onClick={navigateWithState}>Go Back</Button>
+      </div>
 
-    </div>
+    )
+  }
 
-  )
-}
-
-export default CreateVehicleDriverPage;
+  export default CreateVehicleDriverPage;

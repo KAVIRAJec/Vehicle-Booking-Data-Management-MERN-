@@ -15,7 +15,7 @@ const VehilcleDriverMaster = () => {
   useEffect(() => {
     const fetchData = async () => {
       await readAllData();
-      console.log('read all data:', errorMessage,data);
+      console.log('read all data:', errorMessage, data);
       showToast();
     };
     fetchData();
@@ -49,18 +49,18 @@ const VehilcleDriverMaster = () => {
   }
 
   return (
-<div>
+    <div>
       <div className='flex'>
         <div className='text-2xl text-black mt-12 ml-8 font-semibold'>
           Vehicle Driver Master
         </div>
         <div className='flex justify-end mt-12 mr-8 flex-grow'>
-        <Link to='/driverMaster'>
-        <Button className='mx-2'>View Driver</Button>
-        </Link>
-        <Link to='/vehicleMaster'>
-        <Button className='mx-2'>View Vehicle</Button>
-        </Link>
+          <Link to='/driverMaster'>
+            <Button className='mx-2'>View Driver</Button>
+          </Link>
+          <Link to='/vehicleMaster'>
+            <Button className='mx-2'>View Vehicle</Button>
+          </Link>
         </div>
       </div>
       {
@@ -69,6 +69,7 @@ const VehilcleDriverMaster = () => {
           (masterData && tableData ? (
             <div className='mt-6 ml-5  mr-5'>
               <Table
+                height={400}
                 data={tableData}
                 hover={hover}
                 bordered={bordered}
@@ -89,7 +90,7 @@ const VehilcleDriverMaster = () => {
                     {rowData => {
                       return (
                         <div className="flex items-center justify-center -mt-2">
-                        <Button className='h-9 mx-2'>View</Button>
+                          <Button className='h-9 mx-2'>View</Button>
                           <Button className='h-9 mx-2'>Edit</Button>
                           <Button className='h-9 mx-2'>Delete</Button>
                         </div>
@@ -99,12 +100,12 @@ const VehilcleDriverMaster = () => {
                 </Column>
               </Table>
               <div className="flex justify-center mt-4">
-            <Link to='/vehicleDriverMaster/create'>
-            <Button>
-              Create Vehicle-Driver Master
-            </Button>
-            </Link>
-          </div>
+                <Link to='/vehicleDriverMaster/create'>
+                  <Button>
+                    Create Vehicle-Driver Master
+                  </Button>
+                </Link>
+              </div>
               <div style={{ padding: 20 }}>
                 <Pagination
                   prev
