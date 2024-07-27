@@ -3,12 +3,12 @@ import { readAllVehicleDriver } from '@/hooks/useVehicleDriver';
 import React, { useEffect, useState } from 'react'
 import { toast } from 'sonner';
 import { MetroSpinner } from 'react-spinners-kit';
-import { Table, Pagination, SelectPicker } from 'rsuite';
+import { Table, Pagination } from 'rsuite';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 const { Column, HeaderCell, Cell } = Table;
 
-const VehilcleDriverMaster = () => {
+const VehicleDriverMaster = () => {
 
   const { loading, readAllData, errorMessage, data } = readAllVehicleDriver();
 
@@ -150,4 +150,4 @@ const VehilcleDriverMaster = () => {
   )
 }
 
-export default VehilcleDriverMaster
+export default VehicleDriverMaster

@@ -8,11 +8,11 @@ const nodeSchedule = require('node-schedule');
 
 //Booking Creation
 exports.createBooking = async (req, res, next) => {
-    try{
-        const user = await User.findOne({email: req.body.email});
+    try {
+        const user = await User.findOne({ email: req.body.email });
 
-        if(!user){
-            return next(new createError('User not found',404));
+        if (!user) {
+            return next(new createError('User not found', 404));
         }
 
         const startTime = moment(req.body.start_time);
@@ -33,7 +33,7 @@ exports.createBooking = async (req, res, next) => {
                 { start_time: { $lte: req.body.return_time }, return_time: { $gte: req.body.start_time } },
                 { start_time: { $gte: req.body.start_time, $lte: req.body.return_time } }
             ]
-        }); 
+        });
 
         if (existingBooking) {
             return next(new createError('A booking already exists for this time slot', 400));
@@ -58,21 +58,21 @@ exports.createBooking = async (req, res, next) => {
                 newBooking,
             }
         });
-    } catch(error){
+    } catch (error) {
         next(error);
     }
 };
 
 //Read individual booking
-exports.readBooking = async (req,res,next) => {
-    try{
-        const user =  await User.findOne({email: req.body.email});
+exports.readBooking = async (req, res, next) => {
+    try {
+        const user = await User.findOne({ email: req.body.email });
 
-        if(!user){
-            return next(new createError('User not Found',404));
+        if (!user) {
+            return next(new createError('User not Found', 404));
         }
 
-        const booking = await Booking.find({id:user.id});
+        const booking = await Booking.find({ id: user.id });
 
         res.status(200).json({
             status: 'success',
@@ -81,14 +81,14 @@ exports.readBooking = async (req,res,next) => {
                 booking,
             }
         });
-    } catch(error) {
+    } catch (error) {
         next(error);
     }
 }
 
 //Read all Booking
 exports.readAllBooking = async (req, res, next) => {
-    try{
+    try {
         const bookings = await Booking.find();
 
         res.status(200).json({
@@ -105,21 +105,21 @@ exports.readAllBooking = async (req, res, next) => {
 
 //Edit Booking
 exports.editBooking = async (req, res, next) => {
-    try{
-        const booking = await Booking.findOne({booking_id: req.body.booking_id});
+    try {
+        const booking = await Booking.findOne({ booking_id: req.body.booking_id });
 
-        if(!booking){
-            return next(new createError('Booking not found',404));
+        if (!booking) {
+            return next(new createError('Booking not found', 404));
         }
 
-        const user = await User.findOne({email: req.body.email});
+        const user = await User.findOne({ email: req.body.email });
 
-        if(!user){
-            return next(new createError('User not found',404));
+        if (!user) {
+            return next(new createError('User not found', 404));
         }
 
-        if(user.role !=='admin'){
-            return next(new createError('You are not Admin to change Access',404));
+        if (user.role !== 'admin') {
+            return next(new createError('You are not Admin to change Access', 404));
         }
 
         const { status, remarks } = req.body;
@@ -135,33 +135,48 @@ exports.editBooking = async (req, res, next) => {
         if (status === 'approved' && remarks) {
             return next(new createError('Remarks are not required for approved status', 400));
         }
-        
+
         const { _id } = req.body;
-        const availability = await VehicleDriver.findOne({ _id});
-        if(!availability){
-            return next(new createError('VehicleDriver not found',404));
+        const availability = await VehicleDriver.findOne({ _id });
+        if (status === 'approved' && !availability) {
+            return next(new createError('VehicleDriver not found', 404));
         }
-        if(availability.is_available === false){
-            return next(new createError('VehicleDriver is not available',404));
-        }
-        
-        const availableUpdate = await VehicleDriver.findOneAndUpdate({ _id: _id }, { $set: { is_available: false } });
-        if(!availableUpdate){
-            return next(new createError('Error while assigning vehicle',404));
+        if (status === 'approved' && availability.is_available === false) {
+            return next(new createError('VehicleDriver is not available', 404));
         }
 
-        const remarksObject = `Vehicle: ${availableUpdate.vehicle_unique_no}, Driver: ${availableUpdate.driver_name}`;
-        
-        const updatedBooking = await Booking.findOneAndUpdate(
+        const availableUpdate = await VehicleDriver.findOneAndUpdate({ _id: _id }, { $set: { is_available: false } });
+        let remarksObject;
+        if (status === 'approved' && !availableUpdate) {
+            return next(new createError('Error while assigning vehicle', 404));
+            remarksObject = `Vehicle: ${availableUpdate.vehicle_unique_no}, Driver: ${availableUpdate.driver_name}`;
+        }
+
+        let updatedBooking = null;
+
+        if (status === 'rejected') {
+            updatedBooking = await Booking.findOneAndUpdate(
+                { booking_id: req.body.booking_id },
+                {
+                    status: req.body.status,
+                    remarks: remarks,
+                },
+                { upsert: true, new: true, runValidators: true },
+            );
+        }
+        if(status === 'approved') {
+        updatedBooking = await Booking.findOneAndUpdate(
             { booking_id: req.body.booking_id },
-            { status: req.body.status,
-              remarks: remarksObject,
+            {
+                status: req.body.status,
+                remarks: remarksObject,
             },
             { upsert: true, new: true, runValidators: true },
         );
-        
+    }
+
         const returnTime = new Date(updatedBooking.return_time);
-        nodeSchedule.scheduleJob(returnTime, async function() {
+        nodeSchedule.scheduleJob(returnTime, async function () {
             try {
                 await VehicleDriver.findOneAndUpdate({ _id: _id }, { $set: { is_available: true } });
                 console.log('VehicleDriver availability updated to true');
@@ -169,7 +184,7 @@ exports.editBooking = async (req, res, next) => {
                 console.error('Failed to update VehicleDriver availability:', error);
             }
         });
-        
+
         res.status(200).json({
             status: 'success',
             message: 'Booking updated & Assigned Successfully',
@@ -184,28 +199,28 @@ exports.editBooking = async (req, res, next) => {
 
 //Delete Booking
 exports.deleteBooking = async (req, res, next) => {
-    try{
-        const user = await User.findOne({email: req.body.email});
+    try {
+        const user = await User.findOne({ email: req.body.email });
 
-        if(!user){
-            return next(new createError('User not found',404));
+        if (!user) {
+            return next(new createError('User not found', 404));
         }
 
-        if(user.role !=='admin'){
-            return next(new createError('You are not Admin to change Access',404));
+        if (user.role !== 'admin') {
+            return next(new createError('You are not Admin to change Access', 404));
         }
 
-        const booking = await Booking.findOneAndDelete({booking_id: req.body.booking_id});
+        const booking = await Booking.findOneAndDelete({ booking_id: req.body.booking_id });
 
-        if(!booking){
-            return next(new createError('Booking not found',404));
+        if (!booking) {
+            return next(new createError('Booking not found', 404));
         }
 
         res.status(200).json({
             status: 'success',
             message: 'Booking deleted Successfully',
         });
-    }catch (error){
+    } catch (error) {
         next(error);
     }
 };

@@ -7,7 +7,7 @@ import 'rsuite/dist/rsuite.min.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-  <GoogleOAuthProvider clientId="64825603442-2jrapt14j2qlkfdodusc73judfje4809.apps.googleusercontent.com">
+  <GoogleOAuthProvider clientId={import.meta.env.VITE_APP_CLIENT_ID}>
       <AuthProvider>
         <App />
       </AuthProvider>
