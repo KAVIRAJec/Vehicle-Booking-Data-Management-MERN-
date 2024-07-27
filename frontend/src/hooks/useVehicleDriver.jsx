@@ -139,3 +139,108 @@ export function readAvailableVehicleDriver() {
         
     return { availableLoading, readAvailableData, loadingMessage, availableData };
 }
+
+export function editDVehicleDriver() {
+    const [editDLoading, setEditDLoading] = useState(null);
+    const [editDMessage, setEditDMessage] = useState(null);
+    const [editDData, setEditDData] = useState(null);
+
+    const editD = async (values) => {
+        try {
+            setEditDLoading(true);
+            const res = await fetch(`${import.meta.env.VITE_APP_BACKEND_URL}/vehicle_driver/updateDriver`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-type': 'application/json',
+                },
+                body: JSON.stringify(values)
+            });
+
+            const data = await res.json();
+            if(res.status === 200) {
+                setEditDMessage(data.message);
+                setEditDData(data.data);
+            } else if(res.status === 400) {
+                setEditDMessage(data.message);
+            }else {
+                setEditDMessage(data.message);
+            }
+        } catch (error){
+            setEditDMessage(error);
+        }finally{
+            setEditDLoading(false);
+        }
+    };
+        
+    return { editDLoading, editD, editDMessage, editDData };
+}
+
+export function editVVehicleDriver() {
+    const [editVLoading, setEditVLoading] = useState(null);
+    const [editVMessage, setEditVMessage] = useState(null);
+    const [editVData, setEditVData] = useState(null);
+
+    const editV = async (values) => {
+        try {
+            setEditVLoading(true);
+            const res = await fetch(`${import.meta.env.VITE_APP_BACKEND_URL}/vehicle_driver/updateVehicle`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-type': 'application/json',
+                },
+                body: JSON.stringify(values)
+            });
+
+            const data = await res.json();
+            if(res.status === 200) {
+                setEditVMessage(data.message);
+                setEditVData(data.data);
+            } else if(res.status === 400) {
+                setEditVMessage(data.message);
+            }else {
+                setEditVMessage(data.message);
+            }
+        } catch (error){
+            setEditVMessage(error);
+        }finally{
+            setEditVLoading(false);
+        }
+    };
+        
+    return { editVLoading, editV, editVMessage, editVData };
+}
+
+export function deleteVehicleDriver() {
+    const [deleteVDLoading, setDeleteVDLoading] = useState(null);
+    const [deleteVDMessage, setDeleteVDMessage] = useState(null);
+    const [deleteVDData, setDeleteVDData] = useState(null);
+
+    const getDeleteVD = async (values) => {
+        try {
+            setDeleteVDLoading(true);
+            const res = await fetch(`${import.meta.env.VITE_APP_BACKEND_URL}/vehicle_driver/delete`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-type': 'application/json',
+                },
+                body: JSON.stringify(values)
+            });
+
+            const data = await res.json();
+            if(res.status === 200) {
+                setDeleteVDMessage(data.message);
+                setDeleteVDData(data.data);
+            } else if(res.status === 400) {
+                setDeleteVDMessage(data.message);
+            }else {
+                setDeleteVDMessage(data.message);
+            }
+        } catch (error){
+            setDeleteVDMessage(error);
+        }finally{
+            setDeleteVDLoading(false);
+        }
+    };
+        
+    return { deleteVDLoading, getDeleteVD, deleteVDMessage, deleteVDData };
+}

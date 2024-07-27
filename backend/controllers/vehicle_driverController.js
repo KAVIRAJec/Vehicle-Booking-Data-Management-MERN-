@@ -174,7 +174,7 @@ exports.editDriverMapping = async ( req, res, next ) => {
 
         res.status(200).json({
             status: 'success',
-            message: 'Driver Changed successfully',
+            message: 'Driver Changed Successfully',
             data: {
                 updatedMapping,
             }
@@ -228,7 +228,7 @@ exports.editVehicleMapping = async ( req, res, next ) => {
 
         res.status(200).json({
             status: 'success',
-            message: 'Driver Changed successfully',
+            message: 'Driver Changed Successfully',
             data: {
                 updatedMapping,
             }
