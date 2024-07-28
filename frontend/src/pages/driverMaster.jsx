@@ -1,31 +1,44 @@
 import { Card, CardContent, CardTitle } from '@/components/ui/card';
-import { readAllVehicleDriver } from '@/hooks/useVehicleDriver';
 import React, { useEffect, useState } from 'react'
-import { toast } from 'sonner';
-import { MetroSpinner } from 'react-spinners-kit';
+import { Toaster, toast } from 'sonner';
+import { ClassicSpinner, MetroSpinner } from 'react-spinners-kit';
 import { Table, Pagination, SelectPicker } from 'rsuite';
 import { Button } from '@/components/ui/button';
 import { Link, useNavigate } from 'react-router-dom';
+import { deleteDriver, readAllDriver } from '@/hooks/useDriver';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
 const { Column, HeaderCell, Cell } = Table;
 
 const DriverMaster = () => {
 
-  const { loading, readAllData, errorMessage, data } = readAllVehicleDriver();
+  const { readAllLoading, getReadAll, readAllMessage, readAllData } = readAllDriver();
+  const { deleteLoading, getDelete, deleteMessage, deleteData } = deleteDriver()
 
   useEffect(() => {
     const fetchData = async () => {
-      await readAllData();
-      console.log('read all data:', errorMessage, data);
-      showToast();
+      await getReadAll();
+      console.log('read all data:', readAllMessage, readAllData);
     };
     fetchData();
   }, []);
 
-  const showToast = () => {
-    if (!data) {
-      { toast.error(errorMessage) }
+  useEffect(() => {
+    if (readAllMessage && readAllMessage.includes('Successful')) {
+      { toast.success(readAllMessage) }
+    } else if (readAllMessage) {
+      { toast.error(readAllMessage); }
     }
-  }
+    if (deleteMessage && deleteMessage.includes('successful')) {
+      { toast.success(deleteMessage) }
+    } else if (deleteMessage) {
+      { toast.error(deleteMessage); }
+    }
+  }, [readAllMessage, deleteMessage]);
+
+  const handleDelete = async (name) => {
+    getDelete({ name: name });
+  };
 
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
@@ -37,7 +50,7 @@ const DriverMaster = () => {
     setLimit(dataKey);
   };
 
-  const masterData = data ? data.mappings : null;
+  const masterData = readAllData ? readAllData.drivers : null;
 
   let tableData;
   if (masterData) {
@@ -58,6 +71,7 @@ const DriverMaster = () => {
       <div className='flex'>
         <div className='flex flex-col'>
           <div className='text-3xl text-black mt-12 ml-8 font-semibold'>
+            <Toaster richColors position="top-center" />
             Driver Master
           </div>
           <div className='text-lg text-black mt-1 ml-8'>
@@ -69,24 +83,31 @@ const DriverMaster = () => {
         </div>
       </div>
       {
-        !loading ? (
+        !readAllLoading ? (
 
           (masterData && tableData ? (
             <div className='mt-6 ml-5  mr-5'>
               <Table
+                height={400}
                 data={tableData}
                 hover={hover}
                 bordered={bordered}
                 cellBordered={bordered}
                 color='black'
               >
-                <Column align="center" flexGrow={1} minWidth={100}>
-                  <HeaderCell className='text-base text-black font-semibold'>Driver Name</HeaderCell>
-                  <Cell className='text-slate-950' dataKey="driver_name" />
+                <Column align="center" flexGrow={1} minWidth={50}>
+                  <HeaderCell className='text-base text-black font-semibold'>Staff ID</HeaderCell>
+                  <Cell className='text-slate-950' dataKey="staff_id" />
                 </Column>
                 <Column align="center" flexGrow={1} minWidth={250}>
-                  <HeaderCell className='text-base text-black font-semibold'>Vehicle Number</HeaderCell>
-                  <Cell className='text-slate-950' dataKey="vehicle_unique_no" />
+                  <HeaderCell className='text-base text-black font-semibold'>Driver Name</HeaderCell>
+                  <Cell className='text-slate-950' dataKey="name" />
+                </Column>
+                <Column align="center" flexGrow={1} minWidth={250}>
+                  <HeaderCell className='text-base text-black font-semibold'>mappings</HeaderCell>
+                  <Cell className='text-slate-950' dataKey="mapped">
+                    {rowData => rowData.mapped ? 'Yes' : 'No'}
+                  </Cell>
                 </Column>
                 <Column align='center' flexGrow={2} minWidth={250}>
                   <HeaderCell flexGrow={2} className='text-base text-black font-semibold'>Action</HeaderCell>
@@ -94,9 +115,82 @@ const DriverMaster = () => {
                     {rowData => {
                       return (
                         <div className="flex items-center justify-center -mt-2">
-                          <Button className='h-9 mx-2'>View</Button>
+                          <Dialog>
+                            <DialogTrigger className="flex items-center" onClick={(e) => e.stopPropagation()}>
+                              <Button className='h-9 mx-2'>View</Button>
+                            </DialogTrigger>
+                            <DialogContent className="sm:max-w-[425px]" open>
+                              <DialogHeader onClick={(e) => e.stopPropagation()}>
+                                <DialogTitle className='text-2xl text-black flex items-center justify-center'>Driver Details</DialogTitle>
+                                <DialogDescription>
+                                  Make sure to verify all details here. Go to edit to Change it
+                                </DialogDescription>
+                              </DialogHeader>
+                              <div className="grid grid-cols-2 items-center gap-4">
+                                <Label className="text-right text-xl text-black font-bold" >
+                                  Staff ID:
+                                </Label>
+                                <Label className='text-base text-black'>
+                                  {rowData.staff_id}
+                                </Label>
+                                <Label className="text-right text-xl  text-black font-bold">
+                                  Driver Name:
+                                </Label>
+                                <Label className='text-base font-normal'>
+                                  {rowData.name}
+                                </Label>
+                                <Label className="text-right text-xl  text-black font-bold">
+                                  Contact:
+                                </Label>
+                                <Label className='text-base font-normal'>
+                                  {rowData.contact}
+                                </Label>
+                                <Label className="text-right text-xl  text-black font-bold">
+                                  Driving License:
+                                </Label>
+                                <Label className='text-base font-normal'>
+                                  {rowData.dl}
+                                </Label>
+                                <Label className="text-right text-xl  text-black font-bold">
+                                Driving License number:
+                                </Label>
+                                <Label className='text-base font-normal'>
+                                  {rowData.dl_no}
+                                </Label>
+                                <Label className="text-right text-xl  text-black font-bold">
+                                  Driving License Expiry:
+                                </Label>
+                                <Label className='text-base font-normal'>
+                                  {rowData.dl_exp}
+                                </Label>
+                                <Label className="text-right text-xl  text-black font-bold">
+                                  Driving License Type:
+                                </Label>
+                                <Label className='text-base font-normal'>
+                                  {rowData.dl_type}
+                                </Label>
+                                <Label className="text-right text-xl  text-black font-bold">
+                                  Mapping:
+                                </Label>
+                                <Label className='text-base font-normal'>
+                                  {rowData.mapped ? 'Done' : 'Not Yet'}
+                                </Label>
+                              </div>
+                              <DialogFooter>
+                                <DialogClose>
+                                  <Button className='items-start' >Close</Button>
+                                </DialogClose>
+                              </DialogFooter>
+                            </DialogContent>
+                          </Dialog>
+
                           <Button className='h-9 mx-2'>Edit</Button>
-                          <Button className='h-9 mx-2'>Delete</Button>
+                          <Button
+                            className='h-9 mx-2'
+                            onClick={() => {
+                              handleDelete(rowData.name)
+                            }}>{deleteLoading ? <ClassicSpinner /> : 'Delete'}
+                          </Button>
                         </div>
                       );
                     }}

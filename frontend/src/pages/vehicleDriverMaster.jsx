@@ -188,7 +188,7 @@ const VehicleDriverMaster = () => {
                             </DialogTrigger>
                             <DialogContent className="sm:max-w-[425px]" open>
                               <DialogHeader onClick={(e) => e.stopPropagation()}>
-                                <DialogTitle className='text-2xl text-black flex items-center justify-center'>Profile Details</DialogTitle>
+                                <DialogTitle className='text-2xl text-black flex items-center justify-center'>Vehicle Driver Details</DialogTitle>
                                 <DialogDescription>
                                   Make sure to verify all details here. Go to edit to Change it
                                 </DialogDescription>

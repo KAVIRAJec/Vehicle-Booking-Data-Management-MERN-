@@ -161,7 +161,7 @@ export function updateDriver() {
             const data = await res.json();
             if(res.status === 200) {
                 setUpdateMessage(data.message);
-                setUpdateData(availableDrivers);
+                setUpdateData(data.data);
             } else if(res.status === 400) {
                 setUpdateMessage(data.message);
             }else {
@@ -196,7 +196,7 @@ export function deleteDriver() {
             const data = await res.json();
             if(res.status === 200) {
                 setDeleteMessage(data.message);
-                setDeleteData(availableDrivers);
+                setDeleteData(data.data);
             } else if(res.status === 400) {
                 setDeleteMessage(data.message);
             }else {
