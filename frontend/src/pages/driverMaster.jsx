@@ -1,19 +1,32 @@
-import { Card, CardContent, CardTitle } from '@/components/ui/card';
 import React, { useEffect, useState } from 'react'
+import { Card, CardContent, CardTitle } from '@/components/ui/card';
 import { Toaster, toast } from 'sonner';
 import { ClassicSpinner, MetroSpinner } from 'react-spinners-kit';
 import { Table, Pagination, SelectPicker } from 'rsuite';
 import { Button } from '@/components/ui/button';
 import { Link, useNavigate } from 'react-router-dom';
-import { deleteDriver, readAllDriver } from '@/hooks/useDriver';
+import { deleteDriver, readAllDriver, updateDriver } from '@/hooks/useDriver';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 const { Column, HeaderCell, Cell } = Table;
 
 const DriverMaster = () => {
 
   const { readAllLoading, getReadAll, readAllMessage, readAllData } = readAllDriver();
   const { deleteLoading, getDelete, deleteMessage, deleteData } = deleteDriver()
+  const { updateLoading, getUpdate, updateMessage, updateData } = updateDriver();
+  const [formValues, setFormValues] = useState({
+    staff_id: '',
+    contact: '',
+    dl: '',
+    dl_no: '',
+    dl_exp: '',
+    dl_type: '',
+  });
+  const [formErrors, setFormErrors] = useState({});
+  const [isSubmit, setIsSubmit] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,11 +47,48 @@ const DriverMaster = () => {
     } else if (deleteMessage) {
       { toast.error(deleteMessage); }
     }
-  }, [readAllMessage, deleteMessage]);
+    if (updateMessage && updateMessage.includes('successful')) {
+      { toast.success(updateMessage) }
+    } else if (updateMessage) {
+      { toast.error(updateMessage); }
+    }
+  }, [readAllMessage, deleteMessage, updateMessage]);
 
   const handleDelete = async (name) => {
     getDelete({ name: name });
   };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues({ ...formValues, [name]: value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const errors = validate(formValues);
+    setFormErrors(errors);
+    setIsSubmit(true);
+  };
+
+  const removeEmptyValues = (obj) => {
+    return Object.fromEntries(Object.entries(obj).filter(([_, v]) => v !== ""));
+  };
+
+  useEffect(() => {
+    if (Object.keys(formErrors).length === 0 && isSubmit) {
+      const cleanedFormValues = removeEmptyValues(formValues);
+      console.log('New formValues:', cleanedFormValues);
+      getUpdate(cleanedFormValues)
+    }
+  }, [formErrors]);
+
+  const validate = (values) => {
+    const errors = {};
+    if (values.contact && values.contact.length < 9)
+      errors.contact = 'Contact Numbers must be 10 digits';
+    return errors;
+  };
+
 
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
@@ -86,7 +136,7 @@ const DriverMaster = () => {
         !readAllLoading ? (
 
           (masterData && tableData ? (
-            <div className='mt-6 ml-5  mr-5'>
+            <div className='mt-6 ml-5  mr-5 h-auto'>
               <Table
                 height={400}
                 data={tableData}
@@ -152,7 +202,7 @@ const DriverMaster = () => {
                                   {rowData.dl}
                                 </Label>
                                 <Label className="text-right text-xl  text-black font-bold">
-                                Driving License number:
+                                  Driving License number:
                                 </Label>
                                 <Label className='text-base font-normal'>
                                   {rowData.dl_no}
@@ -184,7 +234,134 @@ const DriverMaster = () => {
                             </DialogContent>
                           </Dialog>
 
-                          <Button className='h-9 mx-2'>Edit</Button>
+                          <Dialog>
+                            <DialogTrigger className="flex items-center" onClick={(e) => e.stopPropagation()}>
+                              <Button className='h-9 mx-2'>Edit</Button>
+                            </DialogTrigger>
+                            <DialogContent className="sm:max-w-[425px]" open>
+                              <DialogHeader onClick={(e) => e.stopPropagation()}>
+                                <DialogTitle className='text-2xl text-black flex items-center justify-center pb-2'>Edit Driver Details</DialogTitle>
+                                <DialogDescription>
+                                  Make sure to fill all the details here. Click Save Changes to save
+                                </DialogDescription>
+                              </DialogHeader>
+                              <form onSubmit={handleSubmit} >
+                                <div className='grid grid-cols-2'>
+                                  <div className='flex items-center justify-end mt-8'>
+                                    <Label className='text-base font-semibold pr-4'>Driver Name</Label>
+                                  </div>
+                                  <Input
+                                    readOnly
+                                    defaultValue={rowData.name}
+                                    className="w-[180px] mt-8"
+                                    onClick={() => { setFormValues({ ...formValues, name: rowData.name }) }}
+                                  />
+                                  <div className='flex items-center justify-end mt-8'>
+                                    <Label className='text-base font-semibold pr-4'>Staff ID</Label>
+                                  </div>
+                                  <div>
+                                    <Input
+                                      type='text'
+                                      name="staff_id"
+                                      className="w-[180px] mt-8"
+                                      value={formValues.staff_id}
+                                      onChange={handleChange}
+                                    />
+                                    <p className='text-red-500 text-xs italic'>{formErrors.staff_id}</p>
+                                  </div>
+                                  <div className='flex items-center justify-end mt-8'>
+                                    <Label className='text-base font-semibold pr-4'>Contact Number</Label>
+                                  </div>
+                                  <div>
+                                    <Input
+                                      type='number'
+                                      name="contact"
+                                      value={formValues.contact}
+                                      className="w-[180px] mt-8"
+                                      onChange={handleChange}
+                                    />
+                                    <p className='text-red-500 text-xs italic'>{formErrors.contact}</p>
+                                  </div>
+                                  <div className='flex items-center justify-end mt-8'>
+                                    <Label className='text-base font-semibold pr-4'>Driving License</Label>
+                                  </div>
+                                  <div>
+                                    <Input
+                                      type='text'
+                                      name="dl"
+                                      value={formValues.dl}
+                                      className="w-[180px] mt-8"
+                                      onChange={handleChange}
+                                    />
+                                    <p className='text-red-500 text-xs italic'>{formErrors.dl}</p>
+                                  </div>
+                                  <div className='flex items-center justify-end mt-8'>
+                                    <Label className='text-base font-semibold pr-4'>Driving License Number</Label>
+                                  </div>
+                                  <div>
+                                    <Input
+                                      type='text'
+                                      name="dl_no"
+                                      value={formValues.dl_no}
+                                      className="w-[180px] mt-8"
+                                      onChange={handleChange}
+                                    />
+                                    <p className='text-red-500 text-xs italic'>{formErrors.dl_no}</p>
+                                  </div>
+                                  <div className='flex items-center justify-end mt-8'>
+                                    <Label className='text-base font-semibold pr-4'>License Expire date</Label>
+                                  </div>
+                                  <div>
+                                    <Input
+                                      type='date'
+                                      name="dl_exp"
+                                      value={formValues.dl_exp}
+                                      className="w-[180px] mt-8"
+                                      onChange={handleChange}
+                                    />
+                                    <p className='text-red-500 text-xs italic'>{formErrors.dl_exp}</p>
+                                  </div>
+                                  <div className='flex items-center justify-end mt-8'>
+                                    <Label className='text-base font-semibold pr-4'>Driving License Type</Label>
+                                  </div>
+                                  <div>
+                                    <Select
+                                      onChange={handleChange}
+                                      onValueChange={(value) => setFormValues({ ...formValues, dl_type: value })}
+                                    >
+                                      <SelectTrigger className="w-[180px] mt-8">
+                                        <SelectValue placeholder="Choose License Type" />
+                                      </SelectTrigger>
+                                      <SelectContent>
+                                        <SelectGroup>
+                                          <SelectLabel className='ml-8'>Select Driver name below</SelectLabel>
+                                          <SelectItem value="Heavy Vehicle(HTV)" className="flex items-center justify-center font-semibold">
+                                            Heavy Vehicle(HTV)
+                                          </SelectItem>
+                                          <SelectItem value="Light Vehicle(LMV)" className="flex items-center justify-center font-semibold">
+                                            Light Vehicle(LMV)
+                                          </SelectItem>
+                                        </SelectGroup>
+                                      </SelectContent>
+                                    </Select>
+                                    <p className='text-red-500 text-xs italic'>{formErrors.dl_type}</p>
+                                  </div>
+                                </div>
+
+                                <DialogFooter className='mt-5'>
+                                  <DialogClose>
+                                    <Button variant="ghost" className="items-start">Close</Button>
+                                  </DialogClose>
+                                  <Button type={`${updateLoading ? '' : 'primary'}`}>
+                                    {(updateLoading) ? <ClassicSpinner /> : 'Save Changes'}
+                                  </Button>
+                                </DialogFooter>
+                              </form>
+
+
+                            </DialogContent>
+                          </Dialog>
+
                           <Button
                             className='h-9 mx-2'
                             onClick={() => {

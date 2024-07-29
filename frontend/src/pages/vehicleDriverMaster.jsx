@@ -226,9 +226,9 @@ const VehicleDriverMaster = () => {
                             </DialogTrigger>
                             <DialogContent className="sm:max-w-[425px]" open>
                               <DialogHeader onClick={(e) => e.stopPropagation()}>
-                                <DialogTitle className='text-2xl text-black flex items-center justify-center'>Profile Details</DialogTitle>
+                                <DialogTitle className='text-2xl text-black flex items-center justify-center'>Edit Vehicle Driver</DialogTitle>
                                 <DialogDescription>
-                                  Make sure to verify all details here. Go to edit to Change it
+                                  Make sure to fill all the details here. Click Save Changes to save
                                 </DialogDescription>
                               </DialogHeader>
                               <Label className='text-base font-semibold flex justify-center text-slate-700'>Choose the type of edit</Label>
