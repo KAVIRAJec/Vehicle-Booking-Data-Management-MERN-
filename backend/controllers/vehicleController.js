@@ -1,5 +1,6 @@
 const Vehicle = require('../models/vehicleModel');
 const VehicleDriver = require('../models/vehicle_driverModel');
+const Driver = require('../models/driverModel');
 const createError = require('../utils/appError');
 
 //Vehicle Creation
@@ -104,7 +105,11 @@ exports.deleteVehicle = async (req,res,next) => {
             return next(new createError('Vehicle not found',404));
         }
 
-        await VehicleDriver.deleteMany({ vehicle_unique_no: vehicle.unique_no });
+        const vehicle_driver = await VehicleDriver.findOneAndDelete({ vehicle_unique_no: vehicle.unique_no });
+        const driver = await Driver.findOneAndUpdate(
+            { name: vehicle_driver.driver_name }, 
+            { mapped: false }
+        );
 
         res.status(200).json({
             status: 'success',
