@@ -196,7 +196,7 @@ export function deleteVehicle() {
             const data = await res.json();
             if(res.status === 200) {
                 setDeleteVMessage(data.message);
-                setDeleteVData(availableDrivers);
+                setDeleteVData(data.data);
             } else if(res.status === 400) {
                 setDeleteVMessage(data.message);
             }else {

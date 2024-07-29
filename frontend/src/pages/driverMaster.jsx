@@ -169,7 +169,7 @@ const DriverMaster = () => {
                             <DialogTrigger className="flex items-center" onClick={(e) => e.stopPropagation()}>
                               <Button className='h-9 mx-2'>View</Button>
                             </DialogTrigger>
-                            <DialogContent className="sm:max-w-[425px]" open>
+                            <DialogContent className="sm:max-w-[425px] max-h-[600px] overflow-y-scroll" open>
                               <DialogHeader onClick={(e) => e.stopPropagation()}>
                                 <DialogTitle className='text-2xl text-black flex items-center justify-center'>Driver Details</DialogTitle>
                                 <DialogDescription>
@@ -238,7 +238,7 @@ const DriverMaster = () => {
                             <DialogTrigger className="flex items-center" onClick={(e) => e.stopPropagation()}>
                               <Button className='h-9 mx-2'>Edit</Button>
                             </DialogTrigger>
-                            <DialogContent className="sm:max-w-[425px]" open>
+                            <DialogContent className="sm:max-w-[425px]  max-h-[600px] overflow-y-scroll" open>
                               <DialogHeader onClick={(e) => e.stopPropagation()}>
                                 <DialogTitle className='text-2xl text-black flex items-center justify-center pb-2'>Edit Driver Details</DialogTitle>
                                 <DialogDescription>
