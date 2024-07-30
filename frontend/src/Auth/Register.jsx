@@ -1,5 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom';
+
 import {
     Card,
     CardHeader,
@@ -9,10 +11,12 @@ import {
   } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Toaster, toast } from "sonner"
+import { Toaster } from "@/components/ui/sonner"
+import { toast } from "sonner"
 import { Label } from "@/components/ui/label"
+
 import { ClassicSpinner } from 'react-spinners-kit'
-import { Link } from 'react-router-dom';
+
 import useSignup from '../hooks/useSignup';
 import { GoogleLogin } from '@react-oauth/google'
 import { jwtDecode } from "jwt-decode";

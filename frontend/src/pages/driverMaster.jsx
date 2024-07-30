@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { Card, CardContent, CardTitle } from '@/components/ui/card';
-import { Toaster, toast } from 'sonner';
-import { ClassicSpinner, MetroSpinner } from 'react-spinners-kit';
-import { Table, Pagination, SelectPicker } from 'rsuite';
-import { Button } from '@/components/ui/button';
 import { Link, useNavigate } from 'react-router-dom';
-import { deleteDriver, readAllDriver, updateDriver } from '@/hooks/useDriver';
+
+import { Card, CardContent, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Toaster } from "@/components/ui/sonner";
+import { toast } from "sonner"
+import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { ClassicSpinner, MetroSpinner } from 'react-spinners-kit';
+import { Table, Pagination, SelectPicker } from 'rsuite';
+
+import { deleteDriver, readAllDriver, updateDriver } from '@/hooks/useDriver';
 const { Column, HeaderCell, Cell } = Table;
 
 const DriverMaster = () => {

@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
+
 import { Card, CardContent, CardTitle } from '@/components/ui/card';
-import { Toaster, toast } from 'sonner';
-import { ClassicSpinner, MetroSpinner } from 'react-spinners-kit';
-import { Table, Pagination, SelectPicker } from 'rsuite';
+import { Toaster } from "@/components/ui/sonner";
+import { toast } from "sonner"
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { ClassicSpinner, MetroSpinner } from 'react-spinners-kit';
+import { Table, Pagination, SelectPicker } from 'rsuite';
+
 import { deleteVehicle, readAllVehicle, updateVehicle } from '@/hooks/useVehicle';
 const { Column, HeaderCell, Cell } = Table;
 

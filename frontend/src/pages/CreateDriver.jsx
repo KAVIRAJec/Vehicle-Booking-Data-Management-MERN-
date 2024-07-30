@@ -18,7 +18,8 @@ import { FaCalendar } from 'react-icons/fa';
 import { DatePicker } from 'rsuite';
 import { Uploader } from 'rsuite';
 import { ClassicSpinner } from 'react-spinners-kit';
-import { Toaster, toast } from "sonner"
+import { Toaster } from "@/components/ui/sonner"
+import { toast } from "sonner"
 
 import createDriver from '@/hooks/useDriver';
 

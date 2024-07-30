@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+
 import { Card, CardDescription, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -12,13 +13,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { toast } from "sonner"
 import { FaCalendar } from 'react-icons/fa';
 import { DatePicker } from 'rsuite';
 import { Uploader } from 'rsuite';
-import { useAuth } from '@/contexts/AuthContext';
 import { ClassicSpinner } from 'react-spinners-kit';
+
+import { useAuth } from '@/contexts/AuthContext';
 import useBooking from '@/hooks/useBooking';
-import { Toaster, toast } from "sonner"
 
 const initialValues = {
   vehicle_type: "",

@@ -1,10 +1,13 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { Navigate } from 'react-router-dom';
+
 import './index.css'
+
+import { useAuth } from './contexts/AuthContext'
+
 import Login from './Auth/Login';
 import Register from './Auth/Register';
-import { Navigate } from 'react-router-dom';
-import { useAuth } from './contexts/AuthContext'
 import Home from './pages/home';
 import CreateVehicleDriverPage from './pages/CreateVehicleDriver';
 import VehicleMaster from './pages/vehicleMaster';
