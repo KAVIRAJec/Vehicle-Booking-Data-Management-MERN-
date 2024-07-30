@@ -272,7 +272,7 @@ const VehicleMaster = () => {
                                                         </DialogTrigger>
                                                         <DialogContent className="sm:max-w-[425px]  max-h-[600px] overflow-y-scroll" open>
                                                             <DialogHeader onClick={(e) => e.stopPropagation()}>
-                                                                <DialogTitle className='text-2xl text-black flex items-center justify-center pb-2'>Edit Driver Details</DialogTitle>
+                                                                <DialogTitle className='text-2xl text-black flex items-center justify-center pb-2'>Edit Vehicle Details</DialogTitle>
                                                                 <DialogDescription>
                                                                     Make sure to fill all the details here. Click Save Changes to save
                                                                 </DialogDescription>
@@ -280,103 +280,167 @@ const VehicleMaster = () => {
                                                             <form onSubmit={handleSubmit} >
                                                                 <div className='grid grid-cols-2'>
                                                                     <div className='flex items-center justify-end mt-8'>
-                                                                        <Label className='text-base font-semibold pr-4'>Driver Name</Label>
+                                                                        <Label className='text-base font-semibold pr-4'>Unique Number</Label>
                                                                     </div>
                                                                     <Input
                                                                         readOnly
-                                                                        defaultValue={rowData.name}
+                                                                        defaultValue={rowData.unique_no}
                                                                         className="w-[180px] mt-8"
-                                                                        onClick={() => { setFormValues({ ...formValues, name: rowData.name }) }}
+                                                                        onClick={() => { setFormValues({ ...formValues, unique_no: rowData.unique_no }) }}
                                                                     />
                                                                     <div className='flex items-center justify-end mt-8'>
-                                                                        <Label className='text-base font-semibold pr-4'>Staff ID</Label>
+                                                                        <Label className='text-base font-semibold pr-4'>Vehicle Number</Label>
                                                                     </div>
                                                                     <div>
                                                                         <Input
                                                                             type='text'
-                                                                            name="staff_id"
+                                                                            name="vehicle_no"
                                                                             className="w-[180px] mt-8"
-                                                                            value={formValues.staff_id}
+                                                                            value={formValues.vehicle_no}
                                                                             onChange={handleChange}
                                                                         />
-                                                                        <p className='text-red-500 text-xs italic'>{formErrors.staff_id}</p>
+                                                                        <p className='text-red-500 text-xs italic'>{formErrors.vehicle_no}</p>
                                                                     </div>
                                                                     <div className='flex items-center justify-end mt-8'>
-                                                                        <Label className='text-base font-semibold pr-4'>Contact Number</Label>
-                                                                    </div>
-                                                                    <div>
-                                                                        <Input
-                                                                            type='number'
-                                                                            name="contact"
-                                                                            value={formValues.contact}
-                                                                            className="w-[180px] mt-8"
-                                                                            onChange={handleChange}
-                                                                        />
-                                                                        <p className='text-red-500 text-xs italic'>{formErrors.contact}</p>
-                                                                    </div>
-                                                                    <div className='flex items-center justify-end mt-8'>
-                                                                        <Label className='text-base font-semibold pr-4'>Driving License</Label>
+                                                                        <Label className='text-base font-semibold pr-4'>Vehicle Type</Label>
                                                                     </div>
                                                                     <div>
                                                                         <Input
                                                                             type='text'
-                                                                            name="dl"
-                                                                            value={formValues.dl}
+                                                                            name="vehicle_type"
+                                                                            value={formValues.vehicle_type}
                                                                             className="w-[180px] mt-8"
                                                                             onChange={handleChange}
                                                                         />
-                                                                        <p className='text-red-500 text-xs italic'>{formErrors.dl}</p>
+                                                                        <p className='text-red-500 text-xs italic'>{formErrors.vehicle_type}</p>
                                                                     </div>
                                                                     <div className='flex items-center justify-end mt-8'>
-                                                                        <Label className='text-base font-semibold pr-4'>Driving License Number</Label>
-                                                                    </div>
-                                                                    <div>
-                                                                        <Input
-                                                                            type='text'
-                                                                            name="dl_no"
-                                                                            value={formValues.dl_no}
-                                                                            className="w-[180px] mt-8"
-                                                                            onChange={handleChange}
-                                                                        />
-                                                                        <p className='text-red-500 text-xs italic'>{formErrors.dl_no}</p>
-                                                                    </div>
-                                                                    <div className='flex items-center justify-end mt-8'>
-                                                                        <Label className='text-base font-semibold pr-4'>License Expire date</Label>
+                                                                        <Label className='text-base font-semibold pr-4'>Registration Date</Label>
                                                                     </div>
                                                                     <div>
                                                                         <Input
                                                                             type='date'
-                                                                            name="dl_exp"
-                                                                            value={formValues.dl_exp}
+                                                                            name="reg_date"
+                                                                            value={formValues.reg_date}
                                                                             className="w-[180px] mt-8"
                                                                             onChange={handleChange}
                                                                         />
-                                                                        <p className='text-red-500 text-xs italic'>{formErrors.dl_exp}</p>
+                                                                        <p className='text-red-500 text-xs italic'>{formErrors.reg_date}</p>
                                                                     </div>
                                                                     <div className='flex items-center justify-end mt-8'>
-                                                                        <Label className='text-base font-semibold pr-4'>Driving License Type</Label>
+                                                                        <Label className='text-base font-semibold pr-4'>Road Tax</Label>
+                                                                    </div>
+                                                                    <div>
+                                                                        <Input
+                                                                            type='text'
+                                                                            name="road_tax"
+                                                                            value={formValues.road_tax}
+                                                                            className="w-[180px] mt-8"
+                                                                            onChange={handleChange}
+                                                                        />
+                                                                        <p className='text-red-500 text-xs italic'>{formErrors.road_tax}</p>
+                                                                    </div>
+                                                                    <div className='flex items-center justify-end mt-8'>
+                                                                        <Label className='text-base font-semibold pr-4'>Green Tax</Label>
+                                                                    </div>
+                                                                    <div>
+                                                                        <Input
+                                                                            type='text'
+                                                                            name="green_tax"
+                                                                            value={formValues.green_tax}
+                                                                            className="w-[180px] mt-8"
+                                                                            onChange={handleChange}
+                                                                        />
+                                                                        <p className='text-red-500 text-xs italic'>{formErrors.green_tax}</p>
+                                                                    </div>
+                                                                    <div className='flex items-center justify-end mt-8'>
+                                                                        <Label className='text-base font-semibold pr-4'>Permit</Label>
                                                                     </div>
                                                                     <div>
                                                                         <Select
                                                                             onChange={handleChange}
-                                                                            onValueChange={(value) => setFormValues({ ...formValues, dl_type: value })}
+                                                                            onValueChange={(value) => setFormValues({ ...formValues, permit: value })}
                                                                         >
                                                                             <SelectTrigger className="w-[180px] mt-8">
-                                                                                <SelectValue placeholder="Choose License Type" />
+                                                                                <SelectValue placeholder="Choose Permit Type" />
                                                                             </SelectTrigger>
                                                                             <SelectContent>
                                                                                 <SelectGroup>
-                                                                                    <SelectLabel className='ml-8'>Select Driver name below</SelectLabel>
-                                                                                    <SelectItem value="Heavy Vehicle(HTV)" className="flex items-center justify-center font-semibold">
-                                                                                        Heavy Vehicle(HTV)
+                                                                                    <SelectLabel className='ml-8'>Select Permitted area below</SelectLabel>
+                                                                                    <SelectItem value="Car(NA)" className="flex items-center justify-center font-semibold">
+                                                                                        Car (Not Applicable)
                                                                                     </SelectItem>
-                                                                                    <SelectItem value="Light Vehicle(LMV)" className="flex items-center justify-center font-semibold">
-                                                                                        Light Vehicle(LMV)
+                                                                                    <SelectItem value="Bus-Coimbatore" className="flex items-center justify-center font-semibold">
+                                                                                        Bus - Coimbatore
+                                                                                    </SelectItem>
+                                                                                    <SelectItem value="Bus-Tiruppur" className="flex items-center justify-center font-semibold">
+                                                                                        Bus - Tiruppur
+                                                                                    </SelectItem>
+                                                                                    <SelectItem value="Bus-Namakkal" className="flex items-center justify-center font-semibold">
+                                                                                        Bus - Namakkal
+                                                                                    </SelectItem>
+                                                                                    <SelectItem value="Bus-Erode" className="flex items-center justify-center font-semibold">
+                                                                                        Bus - Erode
+                                                                                    </SelectItem>
+                                                                                    <SelectItem value="Goods carrier" className="flex items-center justify-center font-semibold">
+                                                                                        Goods carrier
                                                                                     </SelectItem>
                                                                                 </SelectGroup>
                                                                             </SelectContent>
                                                                         </Select>
-                                                                        <p className='text-red-500 text-xs italic'>{formErrors.dl_type}</p>
+                                                                        <p className='text-red-500 text-xs italic'>{formErrors.permit}</p>
+                                                                    </div>
+                                                                    <div className='flex items-center justify-end mt-8'>
+                                                                        <Label className='text-base font-semibold pr-4'>Fitness Certificate</Label>
+                                                                    </div>
+                                                                    <div>
+                                                                        <Input
+                                                                            type='text'
+                                                                            name="FC"
+                                                                            value={formValues.FC}
+                                                                            className="w-[180px] mt-8"
+                                                                            onChange={handleChange}
+                                                                        />
+                                                                        <p className='text-red-500 text-xs italic'>{formErrors.FC}</p>
+                                                                    </div>
+                                                                    <div className='flex items-center justify-end mt-8'>
+                                                                        <Label className='text-base font-semibold pr-4'>Pollution Certificate</Label>
+                                                                    </div>
+                                                                    <div>
+                                                                        <Input
+                                                                            type='text'
+                                                                            name="PC"
+                                                                            value={formValues.PC}
+                                                                            className="w-[180px] mt-8"
+                                                                            onChange={handleChange}
+                                                                        />
+                                                                        <p className='text-red-500 text-xs italic'>{formErrors.PC}</p>
+                                                                    </div>
+                                                                    <div className='flex items-center justify-end mt-8'>
+                                                                        <Label className='text-base font-semibold pr-4'>Insurance</Label>
+                                                                    </div>
+                                                                    <div>
+                                                                        <Input
+                                                                            type='text'
+                                                                            name="insurance"
+                                                                            value={formValues.insurance}
+                                                                            className="w-[180px] mt-8"
+                                                                            onChange={handleChange}
+                                                                        />
+                                                                        <p className='text-red-500 text-xs italic'>{formErrors.insurance}</p>
+                                                                    </div>
+                                                                    <div className='flex items-center justify-end mt-8'>
+                                                                        <Label className='text-base font-semibold pr-4'>Insurance Expiry Date</Label>
+                                                                    </div>
+                                                                    <div>
+                                                                        <Input
+                                                                            type='date'
+                                                                            name="insurance_exp"
+                                                                            value={formValues.insurance_exp}
+                                                                            className="w-[180px] mt-8"
+                                                                            onChange={handleChange}
+                                                                        />
+                                                                        <p className='text-red-500 text-xs italic'>{formErrors.insurance_exp}</p>
                                                                     </div>
                                                                 </div>
 

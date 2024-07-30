@@ -161,7 +161,7 @@ export function updateVehicle() {
             const data = await res.json();
             if(res.status === 200) {
                 setUpdateVMessage(data.message);
-                setUpdateVData(availableDrivers);
+                setUpdateVData(data.data);
             } else if(res.status === 400) {
                 setUpdateVMessage(data.message);
             }else {
