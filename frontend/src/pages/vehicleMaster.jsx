@@ -305,13 +305,23 @@ const VehicleMaster = () => {
                                                                         <Label className='text-base font-semibold pr-4'>Vehicle Type</Label>
                                                                     </div>
                                                                     <div>
-                                                                        <Input
-                                                                            type='text'
-                                                                            name="vehicle_type"
-                                                                            value={formValues.vehicle_type}
-                                                                            className="w-[180px] mt-8"
+                                                                        <Select
                                                                             onChange={handleChange}
-                                                                        />
+                                                                            onValueChange={(value) => setFormValues({ ...formValues, vehicle_type: value })}
+                                                                        >
+                                                                            <SelectTrigger className="w-[180px] mt-8">
+                                                                                <SelectValue placeholder="Choose a vehicle" />
+                                                                            </SelectTrigger>
+                                                                            <SelectContent>
+                                                                                <SelectGroup>
+                                                                                    <SelectLabel>Vehicle Type</SelectLabel>
+                                                                                    <SelectItem value="Bus">Bus</SelectItem>
+                                                                                    <SelectItem value="Car">Car</SelectItem>
+                                                                                    <SelectItem value="Battery Vehicle">Battery Vehicle</SelectItem>
+                                                                                    <SelectItem value="Good Carriers">Good Carriers</SelectItem>
+                                                                                </SelectGroup>
+                                                                            </SelectContent>
+                                                                        </Select>
                                                                         <p className='text-red-500 text-xs italic'>{formErrors.vehicle_type}</p>
                                                                     </div>
                                                                     <div className='flex items-center justify-end mt-8'>
