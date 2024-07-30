@@ -334,7 +334,7 @@ const DriverMaster = () => {
                                       </SelectTrigger>
                                       <SelectContent>
                                         <SelectGroup>
-                                          <SelectLabel className='ml-8'>Select Driver name below</SelectLabel>
+                                          <SelectLabel className='ml-8'>Select License type below</SelectLabel>
                                           <SelectItem value="Heavy Vehicle(HTV)" className="flex items-center justify-center font-semibold">
                                             Heavy Vehicle(HTV)
                                           </SelectItem>

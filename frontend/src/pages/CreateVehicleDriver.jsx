@@ -28,7 +28,6 @@ const initialValues = {
 
 const CreateVehicleDriverPage = () => {
 
-  const { userData, logout } = useAuth();
   const { readAvailableLoading, getReadAvailable, readAvailableMessage, readAvailableData } = readAvailableDriver();
   const { readAvailableVLoading, getReadAvailableV, readAvailableVMessage, readAvailableVData } = readAvailableVehicle();
 

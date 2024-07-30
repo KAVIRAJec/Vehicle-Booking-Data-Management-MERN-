@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom';
+
 import { Card, CardDescription, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -15,30 +17,25 @@ import {
 import { FaCalendar } from 'react-icons/fa';
 import { DatePicker } from 'rsuite';
 import { Uploader } from 'rsuite';
-import { useAuth } from '@/contexts/AuthContext';
 import { ClassicSpinner } from 'react-spinners-kit';
-import useBooking from '@/hooks/useBooking';
 import { Toaster, toast } from "sonner"
-import { Link } from 'react-router-dom';
+
+import createDriver from '@/hooks/useDriver';
 
 const initialValues = {
-  vehicle_type: "",
-  people: "",
-  start: "",
-  destination: "",
-  start_time: "",
-  return_time: "",
-  purpose: "",
+  staff_id: "",
   name: "",
-  id: "",
   contact: "",
-  email: "",
+  dl: "",
+  dl_no: "",
+  dl_exp: "",
+  dl_type: "",
 };
 
 const CreateDriverPage = () => {
 
-  const { userData, logout } = useAuth();
-  
+  const { createLoading, getCreate, createMessage, createData } = createDriver();
+
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
@@ -50,213 +47,199 @@ const CreateDriverPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setFormValues({
-      ...formValues,
-      name: userData.name,
-      id: userData.id,
-      contact: userData.contact,
-      email: userData.email,
-    });
     const errors = validate(formValues);
     setFormErrors(errors);
     setIsSubmit(true);
-  }
+  };
 
   useEffect(() => {
     if (Object.keys(formErrors).length === 0 && isSubmit) {
-      handleBooking(formValues);
+      getCreate(formValues);
     }
   }, [formErrors]);
 
   const validate = (values) => {
     const errors = {};
-    if (!values.vehicle_type) {
-      errors.vehicle_type = "Vehicle Type is required";
+    if (!values.staff_id) {
+      errors.staff_id = "Staff ID is required";
     }
-    if (!values.people) {
-      errors.people = "Number of people is required";
+    if (!values.name) {
+      errors.name = "Driver Name is required";
     }
-    if (!values.start) {
-      errors.start = "Starting Place is required";
+    if (!values.contact) {
+      errors.contact = "Contact Number is required";
     }
-    if (!values.destination) {
-      errors.destination = "Reaching Place is required";
+    if (values.contact && (values.contact.length < 10 || values.contact.length > 10)) {
+      errors.contact = "Contact Number must be 10 digit";
     }
-    if (!values.start_time) {
-      errors.start_time = "Starting time is required";
+    if (!values.dl) {
+      errors.dl = "Driving License is required";
     }
-    if (!values.return_time) {
-      errors.return_time = "Returning Place is required";
+    if (!values.dl_no) {
+      errors.dl_no = "Driving License Number is required";
     }
-    if (!values.purpose) {
-      errors.purpose = "Purpose is required";
+    if (!values.dl_exp) {
+      errors.dl_exp = "Driving License Expiry is required";
+    }
+    if (!values.dl_type) {
+      errors.dl_type = "Driving License Type required";
     }
     return errors;
   };
 
-  const { loading, bookForm, errorMessage } = useBooking();
+  useEffect(() => {
+    if (createMessage && createMessage.includes('Successful')) {
+      { toast.success(createMessage) }
+    } else if (createMessage) {
+      { toast.error(createMessage); }
+    }
+    //console.log ('createMessage:', createMessage);
+  }, [createMessage]);
 
-  const handleBooking = async (values) => {
-    console.log(values);
-    bookForm(values);
-    console.log(errorMessage);
-    if(userData.name==null || userData.id==undefined || userData.contact==null || userData.email==null){
-      toast.error("Complete the Profile to submit form")
-    }
-    if (errorMessage && errorMessage.includes("Successful")) {
-      toast.success(errorMessage);
-    } else {
-      toast.error(errorMessage);
-    }
-  };
-  
+
 
   return (
     <div className='flex flex-col items-center mt-14'>
-    
+
       <Card className='mb-20 pb-12 w-9/12 justify-center bg-neutral-200'>
+        <Toaster richColors position="top-center" />
         <form onSubmit={handleSubmit}>
           <CardTitle className='flex justify-center mt-10 text-3xl text-slate-950'>Create new Driver</CardTitle>
           <CardDescription className='flex justify-center text-base mt-2'>Make sure to fill all the details carefully.Please contact for any queries</CardDescription>
 
           <div className='grid grid-cols-2'>
             <div className='flex items-center justify-end mt-8'>
-              <Label className='text-base font-semibold pr-4'>Vehicle Type</Label>
+              <Label className='text-base font-semibold pr-4'>Staff ID</Label>
+            </div>
+            <div>
+              <Input
+                type='text'
+                className='w-[300px] mt-8'
+                placeholder='Enter staff ID'
+                name='staff_id'
+                value={formValues.staff_id}
+                onChange={handleChange}
+              />
+              <p className='text-center text-red-500 text-xs italic'>{formErrors.staff_id}</p>
+            </div>
+            <div className='flex items-center justify-end mt-8'>
+              <Label className='text-base font-semibold pr-4'>Name</Label>
+            </div>
+            <div>
+              <Input
+                type='text'
+                className='w-[300px] mt-8'
+                placeholder='Enter driver name'
+                name='name'
+                value={formValues.name}
+                onChange={handleChange}
+              />
+              <p className='text-center text-red-500 text-xs italic'>{formErrors.name}</p>
+            </div>
+            <div className='flex items-center justify-end mt-8'>
+              <Label className='text-base font-semibold pr-4'>Contact</Label>
+            </div>
+            <div>
+              <Input
+                type='tel'
+                className='w-[300px] mt-8'
+                placeholder='Enter mobile number'
+                name='contact'
+                value={formValues.contact}
+                onChange={handleChange}
+              />
+              <p className='text-center text-red-500 text-xs italic'>{formErrors.contact}</p>
+            </div>
+            <div className='flex items-center justify-end mt-8'>
+              <Label className='text-base font-semibold pr-4'>Driving License</Label>
+            </div>
+            <div>
+              <Input
+                type='text'
+                className='w-[300px] mt-8'
+                placeholder='Enter License Details'
+                name='dl'
+                value={formValues.dl}
+                onChange={handleChange}
+              />
+              <p className='text-center text-red-500 text-xs italic'>{formErrors.dl}</p>
+            </div>
+            <div className='flex items-center justify-end mt-8'>
+              <Label className='text-base font-semibold pr-4'>Driving License Number</Label>
+            </div>
+            <div>
+              <Input
+                type='number'
+                className='w-[300px] mt-8'
+                placeholder='Enter License Number'
+                name='dl_no'
+                value={formValues.dl_no}
+                onChange={handleChange}
+              />
+              <p className='text-center text-red-500 text-xs italic'>{formErrors.dl_no}</p>
+            </div>
+            <div className='flex items-center justify-end mt-8'>
+              <Label className='text-base font-semibold pr-4'>Driving License Expiry</Label>
+            </div>
+            <div>
+              <DatePicker
+                format="dd/MM/yyyy"
+                placeholder="Select Expiry Date"
+                showMeridian
+                caretAs={FaCalendar}
+                className='w-[300px] mt-8'
+                name='dl_exp'
+                value={formValues.dl_exp}
+                onChange={(date) => {
+                  setFormValues((prevValues) => ({
+                    ...prevValues,
+                    dl_exp: date,
+                  }));
+                }}
+              />
+              <p className='text-center text-red-500 text-xs italic'>{formErrors.dl_exp}</p>
+            </div>
+            <div className='flex items-center justify-end mt-8'>
+              <Label className='text-base font-semibold pr-4'>Driving License Type</Label>
             </div>
             <div>
               <Select
                 onChange={handleChange}
-                onValueChange={(value) => setFormValues({ ...formValues, vehicle_type: value })}
+                onValueChange={(value) => setFormValues({ ...formValues, dl_type: value })}
               >
                 <SelectTrigger className="w-[300px] mt-8">
-                  <SelectValue placeholder="Choose a vehicle" />
+                  <SelectValue placeholder="Choose License Type" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectLabel>Vehicle Type</SelectLabel>
-                    <SelectItem value="Bus">Bus</SelectItem>
-                    <SelectItem value="Car">Car</SelectItem>
-                    <SelectItem value="Battery Vehicle">Battery Vehicle</SelectItem>
-                    <SelectItem value="Good Carriers">Good Carriers</SelectItem>
+                    <SelectLabel className='ml-8'>Select License type below</SelectLabel>
+                    <SelectItem value="Heavy Vehicle(HTV)" className="flex items-center justify-center font-semibold">
+                      Heavy Vehicle(HTV)
+                    </SelectItem>
+                    <SelectItem value="Light Vehicle(LMV)" className="flex items-center justify-center font-semibold">
+                      Light Vehicle(LMV)
+                    </SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
-              <p className='text-center text-red-500 text-xs italic'>{formErrors.vehicle_type}</p>
-            </div>
-            <div className='flex items-center justify-end mt-8'>
-              <Label className='text-base font-semibold pr-4'>Number of People</Label>
-            </div>
-            <div>
-              <Input
-                className='w-[300px] mt-8'
-                placeholder='Enter number of people'
-                type='number'
-                name='people'
-                value={formValues.people}
-                onChange={handleChange}
-              />
-              <p className='text-center text-red-500 text-xs italic'>{formErrors.people}</p>
-            </div>
-            <div className='flex items-center justify-end mt-8'>
-              <Label className='text-base font-semibold pr-4'>Staring place</Label>
-            </div>
-            <div>
-              <Input
-                className='w-[300px] mt-8'
-                placeholder='Eg: BIT'
-                type='text'
-                name='start'
-                value={formValues.start}
-                onChange={handleChange}
-              />
-              <p className='text-center text-red-500 text-xs italic'>{formErrors.start}</p>
-            </div>
-            <div className='flex items-center justify-end mt-8'>
-              <Label className='text-base font-semibold pr-4'>Starting time</Label>
-            </div>
-            <div>
-              <DatePicker
-                format="dd MMM yyyy hh:mm:ss aa"
-                placeholder="Select Date and Time"
-                showMeridian
-                caretAs={FaCalendar}
-                className='w-[300px] mt-8'
-                name='start_time'
-                value={formValues.start_time}
-                onChange={(date) => {
-                  setFormValues((prevValues) => ({
-                    ...prevValues,
-                    start_time: date,
-                  }));
-                }}
-              />
-              <p className='text-center text-red-500 text-xs italic'>{formErrors.start_time}</p>
-            </div>
-            <div className='flex items-center justify-end mt-8'>
-              <Label className='text-base font-semibold pr-4'>Reaching place</Label>
-            </div>
-            <div>
-              <Input
-                className='w-[300px] mt-8'
-                placeholder='Eg: Sathy'
-                type='text'
-                name='destination'
-                value={formValues.destination}
-                onChange={handleChange}
-              />
-              <p className='text-center text-red-500 text-xs italic'>{formErrors.destination}</p>
-            </div>
-            <div className='flex items-center justify-end mt-8'>
-              <Label className='text-base font-semibold pr-4'>Returning time</Label>
-            </div>
-            <div>
-              <DatePicker
-                format="dd MMM yyyy hh:mm:ss aa"
-                placeholder="Select Date and Time"
-                showMeridian
-                caretAs={FaCalendar}
-                className='w-[300px] mt-8'
-                name='return_time'
-                value={formValues.return_time}
-                onChange={(date) => {
-                  setFormValues((prevValues) => ({
-                    ...prevValues,
-                    return_time: date,
-                  }));
-                }}
-              />
-              <p className='text-center text-red-500 text-xs italic'>{formErrors.return_time}</p>
-            </div>
-            <div className='flex items-center justify-end mt-8'>
-              <Label className='text-base font-semibold pr-4'>Purpose</Label>
-            </div>
-            <div>
-              <Input
-                className='w-[300px] mt-8'
-                placeholder='Eg: Placement activity,Club Activity'
-                type='text'
-                name='purpose'
-                value={formValues.purpose}
-                onChange={handleChange}
-              />
-              <p className='text-center text-red-500 text-xs italic'>{formErrors.purpose}</p>
+              <p className='text-center text-red-500 text-xs italic'>{formErrors.dl_type}</p>
             </div>
           </div>
-          
+
           <div className='flex justify-center mt-8'>
             <Button
-              type={`${loading ? '' : 'primary'}`}
+              type={`${createLoading ? '' : 'primary'}`}
               appearance="primary"
-              className='h-12 w-24 text-base'              
+              className='h-12 w-24 text-base'
             >
-              {loading ? <ClassicSpinner /> : 'Submit'}
+              {createLoading ? <ClassicSpinner /> : 'Submit'}
             </Button>
           </div>
         </form>
       </Card>
 
       <Link to="/driverMaster">
-      <Button className='mb-20'>Go Back</Button>
+        <Button className='mb-20'>Go Back</Button>
       </Link>
     </div>
 
