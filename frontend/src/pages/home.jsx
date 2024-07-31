@@ -388,10 +388,10 @@ const Home = ({ initialView }) => {
                         </div>
                     )}
                     <div>
-                        <button className="flex py-3 cursor-pointer w-full hover:bg-gray-300 hover:rounded-2xl" onClick={handleLogout}>
+                        <div className="flex py-3 cursor-pointer w-full hover:bg-gray-300 hover:rounded-2xl" onClick={handleLogout}>
                             <LogOut className="h-8 w-8 text-slate-900 cursor-pointer hover:h-9" />
                             <Label className="block ml-3 text-xl text-slate-900 cursor-pointer hover:text-[21px] hover:text-slate-600 font-bold">Log Out</Label>
-                        </button>
+                        </div>
                     </div>
                 </div>
                 <div className="flex-grow">
