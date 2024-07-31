@@ -1,7 +1,7 @@
 import React, { Profiler, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
-import { Label } from "@/components/ui/label.jsx";
+import { Label } from "../components/ui/label.jsx";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -10,13 +10,13 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu.jsx"
+} from "../components/ui/dropdown-menu.jsx"
 import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
-} from "@/components/ui/tooltip.jsx"
+} from "../components/ui/tooltip.jsx"
 import {
     Dialog,
     DialogClose,
@@ -26,7 +26,7 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "@/components/ui/dialog.jsx"
+} from "../components/ui/dialog.jsx"
 import {
     Sheet,
     SheetClose,
@@ -36,18 +36,18 @@ import {
     SheetHeader,
     SheetTitle,
     SheetTrigger,
-} from "@/components/ui/sheet.jsx"
-import { Button } from "@/components/ui/button.jsx";
-import { Toaster } from "@/components/ui/sonner"
+} from "../components/ui/sheet.jsx"
+import { Button } from "../components/ui/button.jsx";
+import { Toaster } from "../components/ui/sonner"
 import { toast } from "sonner"
-import { Input } from "@/components/ui/input.jsx";
+import { Input } from "../components/ui/input.jsx";
 
 import { Bell, BellDot, BusFront, CircleCheckBig, CircleUserRound, Cog, History, LayoutDashboard, LogOut, Menu, User, UserPlus, UserRoundCog } from "lucide-react";
 import { MdManageAccounts, MdOutlineCancel } from "react-icons/md";
 import { ClassicSpinner } from "react-spinners-kit";
 
 import { useAuth } from "../contexts/AuthContext.jsx";
-import useEdit from "@/hooks/useEdit.js";
+import useEdit from "../hooks/useEdit.js";
 
 import Dashboard from "./Dashboard.jsx";
 import Bookvehicle from "./bookvehicle";

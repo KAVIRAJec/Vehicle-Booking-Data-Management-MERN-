@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
-import { Card, CardDescription, CardTitle } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
+import { Card, CardDescription, CardTitle } from '../components/ui/card';
+import { Label } from '../components/ui/label';
+import { Button } from '../components/ui/button';
 import {
   Select,
   SelectContent,
@@ -12,14 +12,14 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "../components/ui/select"
 import { ClassicSpinner } from 'react-spinners-kit';
-import { Toaster } from "@/components/ui/sonner"
+import { Toaster } from "../components/ui/sonner"
 import { toast } from "sonner"
 
-import { readAvailableDriver } from '@/hooks/useDriver';
-import { readAvailableVehicle } from '@/hooks/useVehicle';
-import createVD from '@/hooks/useVehicleDriver';
+import { readAvailableDriver } from '../hooks/useDriver';
+import { readAvailableVehicle } from '../hooks/useVehicle';
+import createVD from '../hooks/useVehicleDriver';
 
 const initialValues = {
   vehicle_unique_no: "",

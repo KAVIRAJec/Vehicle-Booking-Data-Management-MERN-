@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 
-import { Card, CardContent, CardTitle } from '@/components/ui/card';
-import { Toaster } from "@/components/ui/sonner";
+import { Card, CardContent, CardTitle } from '../components/ui/card';
+import { Toaster } from "../components/ui/sonner";
 import { toast } from "sonner"
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
+import { Button } from '../components/ui/button';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog';
+import { Label } from '../components/ui/label';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '../components/ui/select';
+import { Input } from '../components/ui/input';
 import { ClassicSpinner, MetroSpinner } from 'react-spinners-kit';
 import { Table, Pagination, RadioGroup, Radio } from 'rsuite';
 
-import { deleteVehicleDriver, editDVehicleDriver, editVVehicleDriver, readAllVehicleDriver } from '@/hooks/useVehicleDriver';
-import { readAvailableVehicle } from '@/hooks/useVehicle';
-import { readAvailableDriver } from '@/hooks/useDriver';
+import { deleteVehicleDriver, editDVehicleDriver, editVVehicleDriver, readAllVehicleDriver } from '../hooks/useVehicleDriver';
+import { readAvailableVehicle } from '../hooks/useVehicle';
+import { readAvailableDriver } from '../hooks/useDriver';
 const { Column, HeaderCell, Cell } = Table;
 
 const VehicleDriverMaster = () => {

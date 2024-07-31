@@ -8,12 +8,12 @@ import {
     CardContent,
     CardDescription,
     CardTitle,
-  } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+  } from "../components/ui/card"
+import { Button } from "../components/ui/button"
+import { Input } from "../components/ui/input"
 import { toast } from "sonner"
-import { Toaster } from "@/components/ui/sonner"
-import { Label } from "@/components/ui/label"
+import { Toaster } from "../components/ui/sonner"
+import { Label } from "../components/ui/label"
 
 import { ClassicSpinner } from 'react-spinners-kit'
 import useLogin from '../hooks/useLogin';

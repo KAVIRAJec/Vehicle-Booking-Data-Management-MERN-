@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import { toast } from "sonner"
-import { Button } from "@/components/ui/button"
+import { Button } from "../components/ui/button"
 import {
   Dialog,
   DialogContent,
@@ -9,16 +9,16 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardTitle } from '@/components/ui/card';
+} from "../components/ui/dialog"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
+import { Input } from "../components/ui/input"
+import { Card, CardContent, CardTitle } from '../components/ui/card';
 import { Table, Pagination, SelectPicker } from 'rsuite';
 import { MetroSpinner } from 'react-spinners-kit';
 
-import { useAuth } from '@/contexts/AuthContext';
-import { readAllBooking, updateBooking } from '@/hooks/useBooking'
-import { readAvailableVehicleDriver } from '@/hooks/useVehicleDriver';
+import { useAuth } from '../contexts/AuthContext';
+import { readAllBooking, updateBooking } from '../hooks/useBooking'
+import { readAvailableVehicleDriver } from '../hooks/useVehicleDriver';
 const { Column, HeaderCell, Cell } = Table;
 
 const Pendingrequest = () => {

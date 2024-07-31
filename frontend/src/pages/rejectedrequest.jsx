@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 
 import { toast } from "sonner"
-import { Card, CardContent, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardTitle } from '../components/ui/card';
 import { Table, Pagination } from 'rsuite';
 import { MetroSpinner } from 'react-spinners-kit';
 
-import { useAuth } from '@/contexts/AuthContext';
-import { readAllBooking } from '@/hooks/useBooking'
+import { useAuth } from '../contexts/AuthContext';
+import { readAllBooking } from '../hooks/useBooking'
 const { Column, HeaderCell, Cell } = Table;
 
 const Rejectedrequest = () => {

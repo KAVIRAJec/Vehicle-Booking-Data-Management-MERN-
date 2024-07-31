@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { toast } from "sonner"
-import { Toaster } from "@/components/ui/sonner"
-import { Card, CardContent, CardTitle } from '@/components/ui/card';
-import { Select, SelectItem, SelectLabel, SelectContent, SelectGroup, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Toaster } from "../components/ui/sonner"
+import { Card, CardContent, CardTitle } from '../components/ui/card';
+import { Select, SelectItem, SelectLabel, SelectContent, SelectGroup, SelectTrigger, SelectValue } from '../components/ui/select';
 import { Table, Pagination } from 'rsuite';
 import { MetroSpinner } from 'react-spinners-kit';
 
-import { useAuth } from '@/contexts/AuthContext';
-import { readBooking } from '@/hooks/useBooking'
+import { useAuth } from '../contexts/AuthContext';
+import { readBooking } from '../hooks/useBooking'
 const { Column, HeaderCell, Cell } = Table;
 
 const Requesthistory = () => {
