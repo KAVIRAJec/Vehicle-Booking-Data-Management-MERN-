@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
-import { Input } from "../components/ui/input";
-import { Button } from "../components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Search } from "lucide-react";
 import Carousel from "better-react-carousel";
 
@@ -34,22 +34,22 @@ const Dashboard = ({ onViewChange }) => {
 
       <Carousel gap={16} col={1} loop={true} showDots={true} autoplay={2000} dotColorActive="#000">
         <Carousel.Item className="flex justify-center items-center">
-          <img src="/assets/images/battery.png" alt="Battery" width="100%" style={{ height: "550px", opacity: 1 }} />
+          <img src="https://i.ibb.co/PCRXR6V/battery.png" alt="Battery" width="100%" style={{ height: "550px", opacity: 1 }} />
         </Carousel.Item>
         <Carousel.Item className="flex justify-center items-center">
-          <img src="/assets/images/bus.png" alt="Bus" width="100%" style={{ height: "550px", opacity: 1 }} />
+          <img src="https://i.ibb.co/wKWp1kV/bus.png" alt="Bus" width="100%" style={{ height: "550px", opacity: 1 }} />
         </Carousel.Item>
         <Carousel.Item className="flex justify-center items-center">
-          <img src="/assets/images/car.png" alt="Car" width="100%" style={{ height: "550px", opacity: 1 }} />
+          <img src="https://i.ibb.co/Y8KWSjz/car.png" alt="Car" width="100%" style={{ height: "550px", opacity: 1 }} />
         </Carousel.Item>
         <Carousel.Item className="flex justify-center items-center">
-          <img src="/assets/images/truck.png" alt="Truck" width="100%" style={{ height: "550px", opacity: 1 }} />
+          <img src="https://i.ibb.co/3hYCTfC/truck.png" alt="Truck" width="100%" style={{ height: "550px", opacity: 1 }} />
         </Carousel.Item>
         <Carousel.Item className="flex justify-center items-center">
-          <img src="/assets/images/truck1.png" alt="Bus" width="100%" style={{ height: "550px", opacity: 1 }} />
+          <img src="https://i.ibb.co/sQYjt0b/truck1.png" alt="Bus" width="100%" style={{ height: "550px", opacity: 1 }} />
         </Carousel.Item>
         <Carousel.Item className="flex justify-center items-center">
-          <img src="/assets/images/truck2.png" alt="Bus" width="100%" style={{ height: "550px", opacity: 1 }} />
+          <img src="https://i.ibb.co/0sGVyV0/truck2.png" alt="Bus" width="100%" style={{ height: "550px", opacity: 1 }} />
         </Carousel.Item>
       </Carousel>
 
@@ -66,7 +66,7 @@ const Dashboard = ({ onViewChange }) => {
           </div>
         </div>
         <div>
-          <img src="/assets/images/truck.jpeg" alt="Truck" width="100%" className='rounded-xl h-[400px]' />
+          <img src="https://i.ibb.co/vd99Z2Y/truck.jpg" alt="Truck" width="100%" className='rounded-xl h-[400px]' />
         </div>
       </div>
 
@@ -78,7 +78,7 @@ const Dashboard = ({ onViewChange }) => {
               <Button variant='outline' className="flex bg-teal-700 text-white p-2 px-4 mb-2 rounded-xl transform -translate-y-3">Capacity: 6</Button>
             </CardHeader>
             <CardContent>
-              <img src='/assets/images/bolero.png' alt="Car" width='100%' className="rounded-xl h-full" />
+              <img src='https://i.ibb.co/B3vbJTN/bolero.png' alt="Car" width='100%' className="rounded-xl h-full" />
             </CardContent>
             <CardFooter className='flex justify-center'>
               <Button className='bg-gray-800 px-5' onClick={handlePage}>Book Now</Button>
@@ -92,7 +92,7 @@ const Dashboard = ({ onViewChange }) => {
               <Button variant='outline' className="flex bg-teal-700 text-white p-2 px-4 mb-2 rounded-xl transform -translate-y-3">Capacity: 40</Button>
             </CardHeader>
             <CardContent className='flex justify-center'>
-              <img src='/assets/images/Bus2.png' alt="Bus" width='78%' className="rounded-xl h-full" />
+              <img src='https://i.ibb.co/C8Htt5s/Bus2.png' alt="Bus" width='78%' className="rounded-xl h-full" />
             </CardContent>
             <CardFooter className='flex justify-center'>
               <Button className='bg-gray-800 px-5' onClick={handlePage}>Book Now</Button>
@@ -106,7 +106,7 @@ const Dashboard = ({ onViewChange }) => {
               <Button variant='outline' className="flex bg-teal-700 text-white p-2 px-4 mb-2 rounded-xl transform -translate-y-3">Capacity: 1 ton</Button>
             </CardHeader>
             <CardContent className='flex justify-center'>
-              <img src='/assets/images/Truck.png' alt="Car" width='64%' className="rounded-xl h-full" />
+              <img src='https://i.ibb.co/4Jv9ZPw/Truck.png' alt="Car" width='64%' className="rounded-xl h-full" />
             </CardContent>
             <CardFooter className='flex justify-center'>
               <Button className='bg-gray-800 px-5' onClick={handlePage}>Book Now</Button>
@@ -116,7 +116,7 @@ const Dashboard = ({ onViewChange }) => {
 
         <footer className='grid grid-cols-3 bg-black text-white h-80 w-screen mt-10'>
           <div className="p-16 pl-32">
-            <img src="/assets/images/vite.png" alt="Logo" className='h-40 w-40 rounded-full' />
+            <img src="https://i.ibb.co/r0VTkgS/vite.png" alt="Logo" className='h-40 w-40 rounded-full' />
             <p className="mt-2 font-mono font-extrabold text-xl">BIT Transports</p>
           </div>
           <div className="p-10 flex flex-col space-y-6">

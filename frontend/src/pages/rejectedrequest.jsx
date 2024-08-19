@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 
-import { toast } from "sonner"
-import { Card, CardContent, CardTitle } from '../components/ui/card';
-import { Table, Pagination } from 'rsuite';
+import { Toaster, toast } from 'sonner'
+import { Card, CardContent, CardTitle } from '@/components/ui/card';
+import { Pagination } from 'rsuite';
+import Table from 'rsuite/Table';
 import { MetroSpinner } from 'react-spinners-kit';
 
 import { useAuth } from '../contexts/AuthContext';

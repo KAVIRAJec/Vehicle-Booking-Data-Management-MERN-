@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
-import { toast } from "sonner"
-import { Button } from "../components/ui/button"
+import { Toaster, toast } from 'sonner'
+import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
@@ -9,11 +9,12 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "../components/ui/dialog"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
-import { Input } from "../components/ui/input"
-import { Card, CardContent, CardTitle } from '../components/ui/card';
-import { Table, Pagination, SelectPicker } from 'rsuite';
+} from "@/components/ui/dialog"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Input } from "@/components/ui/input"
+import { Card, CardContent, CardTitle } from '@/components/ui/card';
+import { Pagination, SelectPicker } from 'rsuite';
+import Table from 'rsuite/Table';
 import { MetroSpinner } from 'react-spinners-kit';
 
 import { useAuth } from '../contexts/AuthContext';

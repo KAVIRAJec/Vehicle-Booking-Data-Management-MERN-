@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { toast } from "sonner"
-import { Toaster } from "../components/ui/sonner"
-import { Card, CardContent, CardTitle } from '../components/ui/card';
-import { Select, SelectItem, SelectLabel, SelectContent, SelectGroup, SelectTrigger, SelectValue } from '../components/ui/select';
-import { Table, Pagination } from 'rsuite';
+import { Toaster, toast } from 'sonner'
+import { Card, CardContent, CardTitle } from '@/components/ui/card';
+import { Select, SelectItem, SelectLabel, SelectContent, SelectGroup, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Pagination } from 'rsuite';
+import Table from 'rsuite/Table';
 import { MetroSpinner } from 'react-spinners-kit';
 
 import { useAuth } from '../contexts/AuthContext';

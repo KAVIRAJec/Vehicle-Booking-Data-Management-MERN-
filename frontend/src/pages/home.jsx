@@ -1,7 +1,7 @@
 import React, { Profiler, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
-import { Label } from "../components/ui/label.jsx";
+import { Label } from "@/components/ui/label";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -10,13 +10,7 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from "../components/ui/dropdown-menu.jsx"
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from "../components/ui/tooltip.jsx"
+} from "@/components/ui/dropdown-menu"
 import {
     Dialog,
     DialogClose,
@@ -26,7 +20,7 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "../components/ui/dialog.jsx"
+} from "@/components/ui/dialog"
 import {
     Sheet,
     SheetClose,
@@ -36,11 +30,11 @@ import {
     SheetHeader,
     SheetTitle,
     SheetTrigger,
-} from "../components/ui/sheet.jsx"
-import { Button } from "../components/ui/button.jsx";
-import { Toaster } from "../components/ui/sonner"
-import { toast } from "sonner"
-import { Input } from "../components/ui/input.jsx";
+} from "@/components/ui/sheet"
+import { Button } from "../components/ui/button";
+import { Toaster, toast } from 'sonner'
+import { Input } from "../components/ui/input";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 import { Bell, BellDot, BusFront, CircleCheckBig, CircleUserRound, Cog, History, LayoutDashboard, LogOut, Menu, User, UserPlus, UserRoundCog } from "lucide-react";
 import { MdManageAccounts, MdOutlineCancel } from "react-icons/md";
@@ -154,14 +148,14 @@ const Home = ({ initialView }) => {
     return (
         <div className="flex flex-col">
             <div className="flex flex-col absolute pl-3 m-4 text-white font-bold font-sans italic hover:not-italic text-2xl">
-                <img src="/vite.png" alt="Vite" className="absolute h-10 w-10 rounded-xl hover:opacity-95" />
+                <img src="https://i.ibb.co/r0VTkgS/vite.png" alt="Vite" className="absolute h-10 w-10 rounded-xl hover:opacity-95" />
                 <span className="ml-10 pl-3 text-white font-bold font-sans italic hover:not-italic text-2xl">Welcome to {userData.role} Page</span>
             </div>
             <div className="flex items-center justify-end text-white bg-slate-900 h-[70px] pr-3 border-b-2 shadow-xl">
                 <TooltipProvider>
                     <Sheet>
                         <Tooltip>
-                            <TooltipTrigger>
+                            <TooltipTrigger asChild>
                                 <SheetTrigger>
                                     {notification ? <BellDot color="#de5f35" className="mr-5 mt-2 cursor-pointer animate-bounce" /> : <Bell className="mr-5 mt-2 cursor-pointer hover:h-7 w-7" />}
                                 </SheetTrigger>
@@ -192,7 +186,6 @@ const Home = ({ initialView }) => {
                         </Tooltip>
                     </Sheet>
                 </TooltipProvider>
-
                 <DropdownMenu>
                     <DropdownMenuTrigger className="flex items-center mr-2 hover:text-sky-200">
                         {userData.role === 'admin' ? <MdManageAccounts className="h-8 w-8 mx-0 cursor-pointer" /> : <CircleUserRound className="h-8 w-8 mx-0 cursor-pointer" />}
