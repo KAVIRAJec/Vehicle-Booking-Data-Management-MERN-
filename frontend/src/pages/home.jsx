@@ -97,7 +97,7 @@ const Home = ({ initialView }) => {
         return errors;
     };
 
-    const { loading, error, errorMessage, editUser } = useEdit();
+    const { loading, errorMessage, editUser } = useEdit();
 
     const handleEdit = async (values) => {
         editUser(values);
